@@ -22,13 +22,13 @@ public interface TokenAPI {
     //Authorization 报头一个固定的值 内容 grant_type=password&password=密码&username=账号
     //传入用户名和密码
     @FormUrlEncoded
-    @POST("https://huaban.com/oauth/access_token/")
+    @POST("oauth/access_token/")
     Observable<TokenBean> httpsGetTokenRx(@Header(Constant.Authorization) String authorization, @Field("grant_type") String grant,
                                           @Field("username") String username, @Field("password") String password);
 
     //刷新token接口
     @FormUrlEncoded
-    @POST("https://huaban.com/oauth/access_token/")
+    @POST("oauth/access_token/")
     Observable<TokenBean> httpsRefreshTokenRx(@Header(Constant.Authorization) String authorization, @Field("grant_type") String grant,
                                                        @Field("refresh_token") String username);
 }

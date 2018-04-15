@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     public static String baseUrl = "https://api.huaban.com/";
-    private Retrofit retrofit;
+    private static Retrofit retrofit;
     private static RetrofitClient retrofitClient = null;
     /*
     * 私有构造函数，初始化retrofit

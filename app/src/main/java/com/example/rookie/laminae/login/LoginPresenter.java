@@ -1,6 +1,8 @@
 package com.example.rookie.laminae.login;
 
 
+import android.util.Log;
+
 import com.example.rookie.laminae.base.BasePresenter;
 import com.example.rookie.laminae.base.CallBack;
 import com.example.rookie.laminae.util.Constant;
@@ -16,6 +18,7 @@ public class LoginPresenter extends BasePresenter<LoginView> implements CallBack
     };
     public void getLoginApiData(String username,String password){
         loginModel.getLoginApi(username,password,this);
+        Log.d("sss", "getLoginApiD"+"aaa");
     };
     @Override
     public void onSuccess() {
