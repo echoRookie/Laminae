@@ -5,4 +5,17 @@
     <string name="regist">注册</string>
     <string name="login">登录</string>
     <string name="login_tips">用户名或密码不能为空</string>
+    <string name="url_register">http://huaban.com/</string>
+    <string name="navigation_setting">设置</string>
+    <string name="navgation_about">关于</string>
+    <string name="navgation_exit">退出</string>
+    <string name="navgation_user">我的</string>
+    <string name="tmp">粉丝 %1$d 关注 %2$d</string>
+    <string name="userneme_status">未登录</string>
+
+    <plurals name="user_count">
+        <item quantity="one">1 user</item>
+        <item quantity="other">%1$d users</item>
+    </plurals>
+
 </resources>

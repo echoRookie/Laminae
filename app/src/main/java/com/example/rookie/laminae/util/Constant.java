@@ -15,4 +15,13 @@ public class Constant {
     public static final String TOKENREFRESH = "TokenRefresh";
     public static final String TOKENTYPE = "TokenType";
     public static final String TOKENEXPIRESIN = "TokeExpiresIn";
+    //用户信息
+    public static final String USERBEAN = "userBean";
+    public static final String ISLOGIN = "isLogin";
+    public static final String LOGINTIME = "loginTime";
+    public static final String USERNAME = "username";
+    public static final String USERPASSWORD = "userPassword";
+    public static final String USERID = "userID";
+    public static final String USERICONKEY = "userIconKey";
+    public static final String USEREMAIL = "userEmail";
 }

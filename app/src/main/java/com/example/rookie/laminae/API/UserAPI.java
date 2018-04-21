@@ -17,12 +17,12 @@ import retrofit2.http.Query;
 public interface UserAPI {
     //获取登录用户信息
     @GET("users/me")
-   Observable<ResponseBody> httpsUserRx(@Header(Constant.Authorization) String authorization);
+   Observable<UserBean> httpsUserRx(@Header(Constant.Authorization) String authorization);
     //https://api.huaban.com/users/15246080
-   /* //获取个人信息
+   //获取个人信息
     @GET("users/{userId}")
-    Observable<UserMeAndOtherBean> httpsUserInfoRx(@Header(Constant.Authorization) String authorization, @Path("userId") String pinsId);
-
+    Observable<UserBean> httpsUserInfoRx(@Header(Constant.Authorization) String authorization, @Path("userId") String pinsId);
+/*
     //获取我的画板集合信息 不需要显示需要保存
     //https://api.huaban.com/last_boards/?extra=recommend_tags
     @GET("last_boards/")
@@ -55,5 +55,9 @@ public interface UserAPI {
     //https://api.huaban.com/users/743988/likes?limit=40&max=4338219
     //用户喜欢的后续联网
     @GET("users/{userId}/likes")
-    Observable<ListPinsBean> httpsUserLikePinsMaxRx(@Header(Constant.Authorization) String authorization, @Path("userId") String pinsId, @Query("max") int max, @Query("limit") int limit);*/
+    Observable<ListPinsBean> httpsUserLikePinsMaxRx(@Header(Constant.Authorization) String authorization, @Path("userId") String pinsId, @Query("max") int max, @Query("limit") int limit);
+    */
+    //用户的关注
+    @GET("users/{userId}/following")
+    Observable<ResponseBody> httpsUserLikePinsRx(@Header(Constant.Authorization) String authorization, @Path("userId") String pinsId, @Query("limit") int limit);
 }

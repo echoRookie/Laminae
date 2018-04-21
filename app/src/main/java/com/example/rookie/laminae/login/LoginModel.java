@@ -35,37 +35,35 @@ public class LoginModel  {
      * @param password 密码
      * @param callBack  回调接口
      */
-    void getLoginApi(String username, String password, final CallBack callBack){
+    void getLoginApi(final String username, String password, final CallBack callBack){
         final RetrofitClient client = RetrofitClient.getInstance();
         TokenAPI tokenApi = client.createService(TokenAPI.class);
         tokenApi.httpsGetTokenRx(Base64.mClientInto, Constant.PASSWORD, username, password)
                 .subscribeOn(Schedulers.io())
-                .flatMap(new Function<TokenBean, ObservableSource<ResponseBody>>() {
+                .flatMap(new Function<TokenBean, ObservableSource<UserBean>>() {
                     @Override
-                    public ObservableSource<ResponseBody> apply(TokenBean tokenBean) throws Exception {
-                        Log.d("eee", "apply: "+tokenBean.toString());
+                    public ObservableSource<UserBean> apply(TokenBean tokenBean) throws Exception {
+                        Log.d("loginModel", "apply: "+tokenBean.toString());
                         String mAuthorization = tokenBean.getToken_type() + " " + tokenBean.getAccess_token();
                         return client.createService(UserAPI.class).httpsUserRx(mAuthorization);
                     }
                 })
-                .subscribe(new Observer<ResponseBody>() {
+                .subscribe(new Observer<UserBean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(ResponseBody re) {
-                        try {
-                            Log.d("eee", "onNext: "+re.string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    public void onNext(UserBean userBean) {
+
+                        Log.d("loginModel", "onNext: "+userBean.getUsername()+userBean.getEmail());
+                        callBack.onCompleted(userBean);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("ee", "onNext: "+e.toString());
+                        Log.d("loginModel", "onError: "+e.toString());
                     }
 
                     @Override

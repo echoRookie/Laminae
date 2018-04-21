@@ -21,5 +21,5 @@ public interface CallBack <T> {
     /*
     * 数据请求完成后所执行的操作
     * */
-    public void onCompleted();
+    public void onCompleted(T info);
 }
