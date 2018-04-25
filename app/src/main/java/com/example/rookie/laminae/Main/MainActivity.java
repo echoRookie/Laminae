@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.rookie.laminae.API.TokenAPI;
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.login.UserBean;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private CircleImageView userIcon;
     private TextView username;
+    private BottomNavigationBar bottomNavigationBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
         navigationView.inflateHeaderView(R.layout.navgation_header);
         navigationView.inflateMenu(R.menu.navgation_menu);
         init();
-
-
     }
 
     /**
@@ -61,6 +62,20 @@ public class MainActivity extends AppCompatActivity {
             });
             String userIconUrl = (String) SPUtils.get(getApplicationContext(),Constant.USERICONKEY,"");
             ImageLoadBuider.ImageLoadfitCenter(this,userIcon,userIconUrl);
+//       底部导航栏的实现
+            bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
+            bottomNavigationBar.setBarBackgroundColor(R.color.colorPrimary);
+            bottomNavigationBar.setMode(BottomNavigationBar.MODE_SHIFTING)
+                    .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_RIPPLE);
+            bottomNavigationBar .addItem(new BottomNavigationItem(R.drawable.main_home,"Like").setActiveColorResource(R.color.bottomBar4))
+                    .addItem(new BottomNavigationItem(R.drawable.main_home,"Home").setActiveColorResource(R.color.bottomBarHome))
+                    .addItem(new BottomNavigationItem(R.drawable.main_home,"Music").setActiveColorResource(R.color.bottomBarLike))
+                    .addItem(new BottomNavigationItem(R.drawable.main_home,"TV").setActiveColorResource(R.color.bottomBarTv))
+                    .setFirstSelectedPosition(1)
+                    .initialise();
+
+
+
         }
 
     }

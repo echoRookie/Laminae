@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="280dp"
+    app:cardCornerRadius="5dp"
+    android:layout_margin="6dp"
+    android:elevation="7dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/user_pins_cover"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                />
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center">
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:id="@+id/user_pins_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize = "end"
+                android:lines="2"
+                tools:text="测试"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_alignBottom="@id/user_board_cover"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_marginBottom="8dp"
+                android:id="@+id/user_pins_board"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="来自 哈哈哈哈 画板"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:id="@+id/user_pins_follow"
+                android:textSize="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="采集 0 分享 0" />
+        </LinearLayout>
+
+
+
+
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+
+
+

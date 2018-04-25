@@ -40,6 +40,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         if((Boolean) SPUtils.get(getContext(),Constant.ISLOGIN,true)){
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
             startActivity(intent);
+            finish();
         }
 //      初始化控件
         usernameText = (TextInputEditText) findViewById(R.id.loginText) ;

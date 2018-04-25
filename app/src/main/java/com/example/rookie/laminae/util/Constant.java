@@ -16,6 +16,7 @@ public class Constant {
     public static final String TOKENTYPE = "TokenType";
     public static final String TOKENEXPIRESIN = "TokeExpiresIn";
     //用户信息
+    public static final String USERTOKEN = "userToken";
     public static final String USERBEAN = "userBean";
     public static final String ISLOGIN = "isLogin";
     public static final String LOGINTIME = "loginTime";
@@ -24,4 +25,7 @@ public class Constant {
     public static final String USERID = "userID";
     public static final String USERICONKEY = "userIconKey";
     public static final String USEREMAIL = "userEmail";
+    //http limit number
+    public static final int LIMIT = 20;
+
 }

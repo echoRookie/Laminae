@@ -13,6 +13,7 @@ public class UserInfoPresenter extends BasePresenter<UserInfoView> implements Ca
     public UserInfoPresenter(){
         this.userModel = new UserModel();
     }
+//  根据用户id设置用户信息
     public void getUserInfoData(String userId){
         userModel.getUserInfoAPI(userId,this);
     }

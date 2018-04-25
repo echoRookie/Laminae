@@ -1,13 +1,6 @@
 package com.example.rookie.laminae.user;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -20,26 +13,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.FutureTarget;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 import com.example.rookie.laminae.API.UserAPI;
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.httpUtils.RetrofitClient;
 import com.example.rookie.laminae.login.UserBean;
+import com.example.rookie.laminae.user.UserBoard.UserBoardFragment;
+import com.example.rookie.laminae.user.UserLike.UserLikeAdapter;
+import com.example.rookie.laminae.user.UserLike.UserLikeFragment;
+import com.example.rookie.laminae.user.UserPins.UserPinsBean;
+import com.example.rookie.laminae.user.UserPins.UserPinsFragment;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
-import com.example.rookie.laminae.util.FastBlurUtil;
-import com.example.rookie.laminae.util.ImageLoadBuider;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.zip.Inflater;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import okhttp3.ResponseBody;
 
@@ -68,10 +63,9 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
         userFollowers = (TextView) findViewById(R.id.user_follower) ;
 //      初始化用户关注信息
         myFragments = new ArrayList<>();
-        myFragments.add(new Fragment());
-        myFragments.add(new Fragment());
-        myFragments.add(new Fragment());
-        myFragments.add(new Fragment());
+        myFragments.add(UserBoardFragment.newInstance(String.valueOf(userId)));
+        myFragments.add(UserPinsFragment.newInstance(String.valueOf(userId)));
+        myFragments.add(UserLikeFragment.newINstance(String.valueOf(userId)));
         userTablayout = (TabLayout) findViewById(R.id.user_tablayout);
         userViewpager = (ViewPager) findViewById(R.id.user_viewPager);
         myAdapter = new UserViewPagerAdapter(getSupportFragmentManager(),myFragments);
@@ -82,7 +76,36 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
         userInfoPresenter = new UserInfoPresenter();
         userInfoPresenter.attachView(this);
         userInfoPresenter.getUserInfoData(String.valueOf(userId));
+        RetrofitClient client = RetrofitClient.getInstance();
+        UserAPI userAPi = client.createService(UserAPI.class);
+        Observable<ResponseBody> observable = userAPi.httpsUserFollowsPinsRx(Base64.mClientInto,String.valueOf(userId),20);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody value) {
+                        try {
+                            Log.d("userloginac", "onNext: "+value.string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
 
@@ -127,13 +150,6 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
             if(i==2){
                 userTitle.setText("喜欢");
                 userNum.setText(String.valueOf(userBean.getLike_count()));
-                userTablayout.addTab(userTablayout.newTab().setCustomView(view));
-
-            }
-            if(i==3){
-                userTitle.setText("关注");
-                userNum.setText(String.valueOf(userBean.getFollowing_count()));
-
                 userTablayout.addTab(userTablayout.newTab().setCustomView(view));
 
             }
