@@ -1,6 +1,7 @@
 package com.example.rookie.laminae.user.UserLike;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.rookie.laminae.R;
+import com.example.rookie.laminae.imageDetial.ImageDetialActivity;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;
+import com.example.rookie.laminae.util.Constant;
 
 import java.util.List;
 
@@ -38,12 +41,24 @@ public class UserLikeAdapter extends RecyclerView.Adapter<UserLikeAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        UserPinsBean.UserPinsItem  pinsInfo = myLikes.get(position);
+        final UserPinsBean.UserPinsItem  pinsInfo = myLikes.get(position);
         Glide.with(myContext)
                 .load(URL+pinsInfo.getFile().getKey())
                 .crossFade(1000)
                 .centerCrop()
                 .into(holder.likeCover);
+        holder.likeCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pinsId = pinsInfo.getPin_id();
+                Intent intent = new Intent(myContext, ImageDetialActivity.class);
+                intent.putExtra(Constant.PINSID,pinsId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                myContext.startActivity(intent);
+
+
+            }
+        });
         holder.likeText.setText(pinsInfo.getRaw_text());
         holder.likeBoard.setText("来自 "+pinsInfo.getBoard().getTitle()+" 画板");
         holder.likeFollow.setText("喜欢 "+pinsInfo.getLike_count()+" 转采"+pinsInfo.getRepin_count());
@@ -60,6 +75,7 @@ public class UserLikeAdapter extends RecyclerView.Adapter<UserLikeAdapter.MyView
     public int getItemCount() {
         return myLikes.size();
     }
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView likeCover;

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    android:background="@color/classifyBackground">
+    <TextView
+        android:id="@+id/classify_title"
+        android:textSize="18dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="标题"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="240dp">
+        <ImageView
+            android:id="@+id/classify_cover_one"
+            android:layout_marginRight="4dp"
+            tools:background="@drawable/header_back_day"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.4"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8">
+            <ImageView
+                android:id="@+id/classify_cover_two"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.2"
+                android:layout_marginBottom="4dp"/>
+            <ImageView
+                android:id="@+id/classify_cover_three"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.8"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

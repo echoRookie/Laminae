@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Created by rookie on 2018/4/22.
  * 用户的采集和喜欢两个功能返回的数据类型一致，所以共用这两个类进行解析
+ * userPinsItem 为所有图片列表的返回基类
  *
  * {
  "pins": [{

@@ -9,4 +9,7 @@
     <color name="bottomBarLike">#009688</color>
     <color name="bottomBarTv">#673ab7</color>
     <color name="bottomBar4">#795548</color>
+    <color name="classifyBackground">#D0D0D0</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="aplahTransparent">#80050505</color>
 </resources>

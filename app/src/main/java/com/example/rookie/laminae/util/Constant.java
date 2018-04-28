@@ -27,5 +27,7 @@ public class Constant {
     public static final String USEREMAIL = "userEmail";
     //http limit number
     public static final int LIMIT = 20;
+    //图片ID
+    public static final String PINSID = "pinsId";
 
 }

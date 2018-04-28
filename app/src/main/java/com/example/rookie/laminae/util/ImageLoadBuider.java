@@ -26,6 +26,9 @@ public class ImageLoadBuider {
     /**
      * 图片加载地址
      * 分为大中小
+     * @param context
+     * @param view
+     * @param string
      */
 
     /*
@@ -47,13 +50,43 @@ public class ImageLoadBuider {
         String url= "http://img.hb.aicdn.com/";
         Glide.with(context)
                 .load(url+string)
+                .fitCenter()
+                .crossFade(1000)
                 .into(view);
 
 
 
 
     }
-    public static void ImageLoadCenterCrop(){
+
+    /**加载中心填充图片
+     * @param context
+     * @param view
+     * @param string
+     */
+    public static void ImageLoadCenterCrop(Context context,ImageView view,String string){
+        String url= "http://img.hb.aicdn.com/";
+        Glide.with(context)
+                .load(url+string)
+                .centerCrop()
+                .crossFade(1000)
+                .into(view);
+
+    }
+
+    /**
+     * 加载中心填充+高斯模糊
+     * @param context
+     * @param view
+     * @param string
+     */
+    public static void ImageLoadCenterCropBlur(Context context,ImageView view,String string){
+        String url= "http://img.hb.aicdn.com/";
+        Glide.with(context)
+                .load(url+string)
+                .centerCrop()
+                .crossFade(1000)
+                .into(view);
 
     }
     public static void ImageFromParams(){}
