@@ -14,6 +14,7 @@
             app:contentScrim="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="310dp"
+            app:titleEnabled="false"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:statusBarScrim="@color/transparent">

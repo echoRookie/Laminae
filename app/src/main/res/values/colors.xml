@@ -5,11 +5,13 @@
     <color name="colorAccent">#FF4081</color>
     <color name="loginTextColor">#66EDEDED</color>
     <color name="loginButtonBackground">#26F2F2F2</color>
-    <color name="bottomBarHome">#607d8b</color>
-    <color name="bottomBarLike">#009688</color>
-    <color name="bottomBarTv">#673ab7</color>
-    <color name="bottomBar4">#795548</color>
-    <color name="classifyBackground">#D0D0D0</color>
+    <color name="bottomBarHome">#03A9F4</color>
+    <color name="bottomBarHomeDark">#1976D2</color>
+    <color name="bottomBarClassify">#E91E63</color>
+    <color name="bottomBarClassifyDark">#c2185b</color>
+    <color name="bottomBarMore">#4CAF50</color>
+    <color name="bottomBarMoreDark">#388e3c</color>
+    <color name="classifyBackground">#EEEED1</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="aplahTransparent">#80050505</color>
 </resources>

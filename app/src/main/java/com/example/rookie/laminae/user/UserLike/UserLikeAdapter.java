@@ -76,6 +76,14 @@ public class UserLikeAdapter extends RecyclerView.Adapter<UserLikeAdapter.MyView
         return myLikes.size();
     }
 
+    public List<UserPinsBean.UserPinsItem> getMyLikes() {
+        return myLikes;
+    }
+
+    public void setMyLikes(List<UserPinsBean.UserPinsItem> myLikes) {
+        this.myLikes = myLikes;
+    }
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView likeCover;

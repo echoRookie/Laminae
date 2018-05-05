@@ -1,7 +1,10 @@
 package com.example.rookie.laminae.API;
 
 import com.example.rookie.laminae.imageDetial.PinsDetialBean;
+import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Constant;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -23,5 +26,5 @@ public interface ImageDetailAPI {
     //https//api.huaban.com/pins/654197326/recommend/?page=1&limit=40
     //获取某个图片的推荐图片列表
     @GET("pins/{pinsId}/recommend/")
-    Observable<ResponseBody> httpPinsRecommendRx(@Header(Constant.Authorization) String authorization, @Path("pinsId") String pinsId, @Query("page") int page, @Query("limit") int limit);
+    Observable<List<UserPinsBean.UserPinsItem>> httpPinsRecommendRx(@Header(Constant.Authorization) String authorization, @Path("pinsId") String pinsId, @Query("page") int page, @Query("limit") int limit);
 }

@@ -1,14 +1,18 @@
 package com.example.rookie.laminae.main;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment myFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,18 @@ public class MainActivity extends AppCompatActivity {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.inflateHeaderView(R.layout.navgation_header);
         navigationView.inflateMenu(R.menu.navgation_menu);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar.setTitle("花瓣");
+        setSupportActionBar(toolbar);
+//      设置状态栏和标题栏颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getResources().getColor(R.color.bottomBarHomeDark));
+        }
+        toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarHome));
         fragmentManager = getSupportFragmentManager();
 
         init();
@@ -94,10 +111,9 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationBar.setBarBackgroundColor(R.color.colorPrimary);
             bottomNavigationBar.setMode(BottomNavigationBar.MODE_SHIFTING)
                     .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_RIPPLE);
-            bottomNavigationBar .addItem(new BottomNavigationItem(R.drawable.main_home,"Like").setActiveColorResource(R.color.bottomBar4))
-                    .addItem(new BottomNavigationItem(R.drawable.main_home,"Home").setActiveColorResource(R.color.bottomBarHome))
-                    .addItem(new BottomNavigationItem(R.drawable.main_home,"Music").setActiveColorResource(R.color.bottomBarLike))
-                    .addItem(new BottomNavigationItem(R.drawable.main_home,"TV").setActiveColorResource(R.color.bottomBarTv))
+            bottomNavigationBar .addItem(new BottomNavigationItem(R.drawable.main_home,"Home").setActiveColorResource(R.color.bottomBarHome))
+                    .addItem(new BottomNavigationItem(R.drawable.main_classify,"Classify").setActiveColorResource(R.color.bottomBarClassify))
+                    .addItem(new BottomNavigationItem(R.drawable.main_more,"More").setActiveColorResource(R.color.bottomBarMore))
                     .setFirstSelectedPosition(0)
                     .initialise();
            bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
@@ -108,9 +124,35 @@ public class MainActivity extends AppCompatActivity {
                    switch (position){
                        case 0:
                            switchFragment(homeFragment);
+                           toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarHome));
+                           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                               Window window = getWindow();
+                               window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                                       | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                               window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                               window.setStatusBarColor(getResources().getColor(R.color.bottomBarHomeDark));
+                           }
                            break;
                        case 1:
                            switchFragment(classifyFragment);
+                           toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarClassify));
+                           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                               Window window = getWindow();
+                               window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                                       | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                               window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                               window.setStatusBarColor(getResources().getColor(R.color.bottomBarClassifyDark));
+                           }
+                           break;
+                       case 2:
+                           toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarMore));
+                           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                               Window window = getWindow();
+                               window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                                       | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                               window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                               window.setStatusBarColor(getResources().getColor(R.color.bottomBarMoreDark));
+                           }
                            break;
 
                    }

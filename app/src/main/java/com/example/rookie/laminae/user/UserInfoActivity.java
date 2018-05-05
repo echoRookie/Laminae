@@ -4,10 +4,13 @@ import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +42,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 import okhttp3.ResponseBody;
 
 public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
+    private Toolbar toolbar;
     private int userId;
     private ImageView haederBackground;
     private CircleImageView userIcon;
@@ -55,6 +59,7 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+        toolbar = (Toolbar) findViewById(R.id.user_toolbar) ;
 //      得到用户Id，初始化用户信息
         userId = getIntent().getIntExtra(Constant.USERID,0);
         haederBackground = (ImageView) findViewById(R.id.header_image_background);
@@ -129,6 +134,16 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
                 .crossFade(1000)
                 .into(haederBackground);
         username.setText(userBean.getUsername());
+//      设置标题栏
+        toolbar.setTitle(userBean.getUsername());
+        setSupportActionBar(toolbar);
+        /*显示toolbar自带返回键设置标题*/
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         userFollowers.setText("粉丝 | "+userBean.getFollower_count());
         Log.d("userAC", "setUserInfo: "+userBean.getBoard_count());
         for (int i=0;i<myAdapter.getCount();i++) {
@@ -156,6 +171,17 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+       /* 处理返回键的点击事件*/
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void showLodaing() {
 

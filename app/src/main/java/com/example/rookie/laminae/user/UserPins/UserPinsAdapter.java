@@ -33,6 +33,14 @@ public class UserPinsAdapter extends RecyclerView.Adapter<UserPinsAdapter.MyView
         return myViewHolder;
     }
 
+    public List<UserPinsBean.UserPinsItem> getMyPins() {
+        return myPins;
+    }
+
+    public void setMyPins(List<UserPinsBean.UserPinsItem> myPins) {
+        this.myPins = myPins;
+    }
+
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         UserPinsBean.UserPinsItem  pinsInfo = myPins.get(position);

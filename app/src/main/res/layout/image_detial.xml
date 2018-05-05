@@ -35,7 +35,8 @@
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
-    <FrameLayout
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/image_detial_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -98,17 +99,27 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/image_detial_usericon"
                     android:layout_marginRight="32dp"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/header_back_day" />
                 <TextView
+                    android:padding="8dp"
+                    android:textSize="16dp"
+                    android:background="@drawable/text_view_background"
                     android:layout_centerVertical="true"
                     android:id="@+id/image_detial_username"
                     android:layout_toRightOf="@id/image_detial_usericon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="yuyuyyu"/>
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="36dp"
+                    android:text="用户"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
             </RelativeLayout>
             <View
@@ -121,6 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RelativeLayout
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <ImageView
@@ -129,15 +141,15 @@
                         android:id="@+id/image_detial_board_cover_one"
                         android:background="@drawable/header_back_night"
                         android:scaleType="centerCrop"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp" />
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
                     <ImageView
                         android:layout_marginRight="0.5dp"
                         android:id="@+id/image_detial_board_cover_two"
                         android:background="@drawable/header_back_night"
                         android:scaleType="centerCrop"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_below="@id/image_detial_board_cover_one"/>
                     <ImageView
                         android:layout_marginBottom="0.5dp"
@@ -145,17 +157,20 @@
                         android:id="@+id/image_detial_board_cover_three"
                         android:background="@drawable/header_back_night"
                         android:scaleType="centerCrop"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp" />
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
                     <ImageView
                         android:layout_below="@id/image_detial_board_cover_three"
                         android:layout_toRightOf="@id/image_detial_board_cover_two"
                         android:id="@+id/image_detial_board_cover_four"
                         android:background="@drawable/header_back_night"
                         android:scaleType="centerCrop"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp" />
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
                     <TextView
+                        android:textSize="16dp"
+                        android:padding="8dp"
+                        android:background="@drawable/text_view_background"
                         android:id="@+id/image_detial_board"
                         android:layout_marginLeft="32dp"
                         android:layout_toRightOf="@id/image_detial_board_cover_three"
@@ -163,6 +178,9 @@
                         android:layout_height="wrap_content"
                         android:text="被采集到画板"/>
                     <TextView
+                        android:padding="8dp"
+                        android:textSize="16dp"
+                        android:background="@drawable/text_view_background"
                         android:layout_marginTop="8dp"
                         android:text="haha"
                         android:layout_below="@id/image_detial_board"
@@ -171,6 +189,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="32dp"/>
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:text="画板"
+                        android:layout_marginRight="36dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"/>
                 </RelativeLayout>
             </RelativeLayout>
             <View
@@ -191,7 +216,7 @@
             </android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
-    </FrameLayout>
+    </android.support.v4.widget.NestedScrollView>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/image_detial_floatButton"
         android:layout_width="wrap_content"
