@@ -20,7 +20,10 @@
         </activity>
         <activity android:name=".main.MainActivity" />
         <activity android:name=".user.UserInfoActivity" />
-        <activity android:name=".imageDetial.ImageDetialActivity"></activity>
+        <activity android:name=".imageDetial.ImageDetialActivity" />
+        <activity android:name=".welcome.WelcomeActivity" />
+        <activity android:name=".Search.SearchActivity" />
+        <activity android:name=".main.classify.ClassifyInfoActivity"></activity>
     </application>
 
 </manifest>

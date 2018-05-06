@@ -29,5 +29,8 @@ public class Constant {
     public static final int LIMIT = 20;
     //图片ID
     public static final String PINSID = "pinsId";
+    //图片类别标识 + 标题
+    public static final String TYPEKEY = "typeKey";
+    public static final String TYPETITLE = "typeTitle";
 
 }

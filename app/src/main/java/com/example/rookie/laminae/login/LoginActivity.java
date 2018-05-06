@@ -37,7 +37,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         super.onCreate(savedInstanceState);
         dissmissWindowbar();
         setContentView(R.layout.activity_login);
-        if((Boolean) SPUtils.get(getContext(),Constant.ISLOGIN,true)){
+        if((Boolean) SPUtils.get(getContext(),Constant.ISLOGIN,false)){
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
             startActivity(intent);
             finish();
@@ -48,7 +48,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         loginButton = (Button) findViewById(R.id.btn_login);
         registerButton = (Button) findViewById(R.id.btn_register);
 
-        registerButton.setText(String.format(getString(R.string.tmp), 1,2));
+        registerButton.setText(R.string.regist);
 
 //      初始化控制器
         loginPresenter = new LoginPresenter();
@@ -106,6 +106,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     public void navigateToHome() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
 
 
     }

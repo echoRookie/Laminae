@@ -79,7 +79,7 @@ public class ClassifyFragment extends Fragment {
                               myKeys.add(value.getPins().get(j).getFile().getKey());
                               Log.d("class", "onNext: "+myKeys.size());
                               if(myKeys.size() == (myTitles.size()*3)){
-                                  myAdapter = new ClassifyAdapter(myTitles,myKeys,getContext());
+                                  myAdapter = new ClassifyAdapter(myTitles,myKeys,myTypes,getContext());
                                   GridLayoutManager manager = new GridLayoutManager(getContext(),2);
                                   recyclerView.setLayoutManager(manager);
                                   recyclerView.setAdapter(myAdapter);

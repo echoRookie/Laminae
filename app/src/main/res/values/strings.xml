@@ -8,9 +8,11 @@
     <string name="url_register">http://huaban.com/</string>
     <string name="navigation_setting">设置</string>
     <string name="navgation_about">关于</string>
-    <string name="navgation_exit">退出</string>
+    <string name="navgation_exit">退出系统</string>
     <string name="navgation_user">我的</string>
+    <string name="navgation_search">搜索</string>
     <string name="tmp">粉丝 %1$d 关注 %2$d</string>
+    <string name="navigation_logout">退出当前账号</string>
     <string name="userneme_status">未登录</string>
 
     <plurals name="user_count">

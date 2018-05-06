@@ -1,6 +1,7 @@
 package com.example.rookie.laminae.main.classify;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +35,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyView
     private List<String> myTitles;
     private List<String> myTypes;
     private Context myContext;
-    private List<String> myKeys;
+    private List<String> myKeys;//类别图片的前三张id
     private int pinsLenght;
     private int keysLenght;
     private String URL = "http://img.hb.aicdn.com/";
@@ -42,9 +43,10 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyView
     /**
      * 构造函数
      */
-    public ClassifyAdapter(List<String> titles,List<String> keys,Context context){
+    public ClassifyAdapter(List<String> titles,List<String> keys,List<String> types,Context context){
         this.myTitles = titles;
         this.myKeys = keys;
+        this.myTypes = types;
         this.myContext = context;
         pinsLenght = keys.size()/3;
         keysLenght = keys.size();
@@ -59,7 +61,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.classifyTitle.setText(myTitles.get(position));
         int index = position + 1;
 //      进行网络请求获取各个类别的数据
@@ -78,6 +80,16 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyView
                 .crossFade(1000)
                 .centerCrop()
                 .into(holder.classifyCoverThree);
+        holder.classifyCoverOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(myContext,ClassifyInfoActivity.class);
+                intent.putExtra(Constant.TYPEKEY,myTypes.get(position));
+                intent.putExtra(Constant.TYPETITLE,myTitles.get(position));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                myContext.startActivity(intent);
+            }
+        });
 
 
     }

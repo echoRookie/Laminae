@@ -3,23 +3,29 @@ package com.example.rookie.laminae.main;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.rookie.laminae.API.ImageDetailAPI;
 import com.example.rookie.laminae.API.TypeAPI;
 import com.example.rookie.laminae.R;
+import com.example.rookie.laminae.Search.SearchActivity;
 import com.example.rookie.laminae.httpUtils.RetrofitClient;
 import com.example.rookie.laminae.main.classify.ClassifyAdapter;
 import com.example.rookie.laminae.main.classify.ClassifyFragment;
@@ -51,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private long mExitTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +66,24 @@ public class MainActivity extends AppCompatActivity {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.inflateHeaderView(R.layout.navgation_header);
         navigationView.inflateMenu(R.menu.navgation_menu);
+        drawerLayout = (DrawerLayout) findViewById(R.id.MyDrawerLayout);
+//      侧面导航栏的点击事件
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(item.getItemId() == R.id.nav_logout){
+                    drawerLayout.closeDrawers();
+                    SPUtils.clear(getApplicationContext());
+                    finish();
+                }
+                if(item.getItemId() == R.id.nav_search){
+                    drawerLayout.closeDrawers();
+                    Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbar.setTitle("花瓣");
         setSupportActionBar(toolbar);
@@ -95,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
         if(SPUtils.get(getApplicationContext(),Constant.ISLOGIN,false)!=null){
             String usernameStatus = (String) SPUtils.get(getApplicationContext(),Constant.USERNAME,getString(R.string.userneme_status));
             username.setText(usernameStatus);
+            String userIconKey = (String) SPUtils.get(getApplicationContext(),Constant.USERICONKEY,"");
+            ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(),userIcon,userIconKey);
             userIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -116,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     .addItem(new BottomNavigationItem(R.drawable.main_more,"More").setActiveColorResource(R.color.bottomBarMore))
                     .setFirstSelectedPosition(0)
                     .initialise();
-           bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
+            bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
 
                @Override
                public void onTabSelected(int position) {
@@ -225,6 +253,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+    }
+    /*back键点击的监听实现再按一次退出程序*/
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - mExitTime > 2000) {
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                mExitTime = System.currentTimeMillis();
+            } else {
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

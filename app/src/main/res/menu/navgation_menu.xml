@@ -3,6 +3,10 @@
     <group android:checkableBehavior="single">
         <item
             android:icon="@drawable/startup_logo"
+            android:id="@+id/nav_search"
+            android:title="@string/navgation_search"/>
+        <item
+            android:icon="@drawable/startup_logo"
             android:id="@+id/nav_setting"
             android:title="@string/navigation_setting"/>
         <item
@@ -19,5 +23,10 @@
             android:icon="@drawable/startup_logo"
             android:id="@+id/nav_exit"
             android:title="@string/navgation_exit"/>
+        <item
+            android:icon="@drawable/startup_logo"
+            android:id="@+id/nav_logout"
+            android:title="@string/navigation_logout"/>
+
     </group>
 </menu>
