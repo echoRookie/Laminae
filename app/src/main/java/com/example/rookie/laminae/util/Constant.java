@@ -15,6 +15,7 @@ public class Constant {
     public static final String TOKENREFRESH = "TokenRefresh";
     public static final String TOKENTYPE = "TokenType";
     public static final String TOKENEXPIRESIN = "TokeExpiresIn";
+    public static final String USERAUthorization = "userAuthorization";
     //用户信息
     public static final String USERTOKEN = "userToken";
     public static final String USERBEAN = "userBean";
@@ -32,5 +33,26 @@ public class Constant {
     //图片类别标识 + 标题
     public static final String TYPEKEY = "typeKey";
     public static final String TYPETITLE = "typeTitle";
+    //搜索内容
+    public static final String SEARCHKEY = "searchKey";
+    //画板
+    public static final String BOARDID = "boardId";
+    public static final String BOARDTITLE = "boardTilte";
+    public static final String BOARDDESCRIPTION = "boardDescription";
+    //用户喜欢操作的操作字段
+    public static final String OPERATELIKE = "like";
+    public static final String OPERATEUNLIKE = "unlike";
+
+    //用户对画板的关注操作字段
+    public static final String OPERATEFOLLOW = "follow";
+    public static final String OPERATEUNFOLLOW = "unfollow";
+
+    //获得用户画板列表详情的操作符
+    public static final String OPERATEBOARDEXTRA="recommend_tags";
+    public static final boolean OPERATECHECK=true;
+
+    //删除画板的操作符
+    public static final String OPERATEDELETEBOARD="DELETE";
+
 
 }

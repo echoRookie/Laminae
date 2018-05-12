@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.rookie.laminae.R;
+import com.example.rookie.laminae.util.ImageLoadBuider;
 
 import java.util.List;
 
@@ -35,11 +36,7 @@ public class UserBoardAdapter extends RecyclerView.Adapter<UserBoardAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         UserBoardBean.BoardItemInfo boardInfo = myBoards.get(position);
-        Glide.with(myContext)
-                .load(URL+boardInfo.getPins().get(0).getFile().getKey())
-                .crossFade(1000)
-                .centerCrop()
-                .into(holder.boardCover);
+        ImageLoadBuider.ImageLoadFromParamsGeneral(myContext,holder.boardCover,boardInfo.getPins().get(0).getFile().getKey());
         holder.boardTitle.setText(boardInfo.getTitle());
         holder.boardFollow.setText("采集 "+boardInfo.getPin_count()+"关注 "+boardInfo.getFollow_count());
         holder.boardOperate.setText("画板编辑");

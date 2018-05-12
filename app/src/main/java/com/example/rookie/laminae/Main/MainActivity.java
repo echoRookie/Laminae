@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,29 +21,18 @@ import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.example.rookie.laminae.API.ImageDetailAPI;
-import com.example.rookie.laminae.API.TypeAPI;
+import com.example.rookie.laminae.error.ErrorFragment;
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.Search.SearchActivity;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
-import com.example.rookie.laminae.main.classify.ClassifyAdapter;
 import com.example.rookie.laminae.main.classify.ClassifyFragment;
 import com.example.rookie.laminae.main.home.HomeFragment;
 import com.example.rookie.laminae.user.UserInfoActivity;
-import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
+import com.example.rookie.laminae.util.NetUtils;
 import com.example.rookie.laminae.util.SPUtils;
 
-import java.io.IOException;
-
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
@@ -53,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationBar bottomNavigationBar;
     private ClassifyFragment classifyFragment;
     private HomeFragment homeFragment;
+    private ErrorFragment errorFragment;
     private Fragment myFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -102,10 +91,20 @@ public class MainActivity extends AppCompatActivity {
 //      进入首页用fragment替换主布局
         homeFragment = new HomeFragment();
         classifyFragment = new ClassifyFragment();
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.main_content, homeFragment)
-                .commit();
-        myFragment = homeFragment;
+        errorFragment = new ErrorFragment();
+//        if(NetUtils.isConnected(getApplicationContext())){
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        fragmentTransaction.add(R.id.main_content, homeFragment).commit();
+            myFragment =homeFragment ;
+//        }
+//        else {
+//
+//            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.add(R.id.main_content, errorFragment)
+//                    .commit();
+//            myFragment = errorFragment;
+//        }
     }
 
     /**
@@ -236,12 +235,12 @@ public class MainActivity extends AppCompatActivity {
 //    替换fragment的方法
     private void switchFragment(Fragment fragment) {
         //判断当前显示的Fragment是不是切换的Fragment
-        if (myFragment != fragment) {
+        if (myFragment != fragment ) {
             //判断切换的Fragment是否已经添加过
             if (!fragment.isAdded()) {
                 //如果没有，则先把当前的Fragment隐藏，把切换的Fragment添加上
                 getSupportFragmentManager().beginTransaction().hide(myFragment)
-                        .add(R.id.main_content, fragment).commit();
+                        .add(R.id.main_content, fragment).show(fragment).commit();
             } else {
                 //如果已经添加过，则先把当前的Fragment隐藏，把切换的Fragment显示出来
                 getSupportFragmentManager().beginTransaction().hide(myFragment).show(fragment).commit();

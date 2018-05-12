@@ -3,12 +3,15 @@
     package="com.example.rookie.laminae">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Laminae"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".login.LoginActivity">
@@ -23,7 +26,9 @@
         <activity android:name=".imageDetial.ImageDetialActivity" />
         <activity android:name=".welcome.WelcomeActivity" />
         <activity android:name=".Search.SearchActivity" />
-        <activity android:name=".main.classify.ClassifyInfoActivity"></activity>
+        <activity android:name=".main.classify.ClassifyInfoActivity" />
+        <activity android:name=".SearchResult.SearchResultActivity" />
+        <activity android:name=".boardDetial.BoardDetialActivity"></activity>
     </application>
 
 </manifest>

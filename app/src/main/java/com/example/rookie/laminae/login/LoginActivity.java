@@ -3,6 +3,7 @@ package com.example.rookie.laminae.login;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
+import android.os.Looper;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.rookie.laminae.main.MainActivity;
 import com.example.rookie.laminae.R;
@@ -140,5 +142,38 @@ public class LoginActivity extends BaseActivity implements LoginView {
         super.onDestroy();
         loginPresenter.detachView();
         background.stop();
+    }
+
+    @Override
+    public void showError() {
+        Looper.prepare();
+        Toast.makeText(this,"用户名或密码错误",Toast.LENGTH_SHORT).show();
+        Looper.loop();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loginButton.setText("登录");
+            }
+        });
+
+
+
+    }
+
+    @Override
+    public void showToast(String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loginButton.setText("登录");
+            }
+        });
+        Looper.prepare();
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+
+        Looper.loop();
+
+
+
     }
 }

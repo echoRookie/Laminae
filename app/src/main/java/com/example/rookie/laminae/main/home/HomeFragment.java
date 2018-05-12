@@ -139,4 +139,12 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
+
+    public List<UserPinsBean.UserPinsItem> getMyLins() {
+        return myLins;
+    }
+
+    public void setMyLins(List<UserPinsBean.UserPinsItem> myLins) {
+        this.myLins = myLins;
+    }
 }

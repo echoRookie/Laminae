@@ -14,6 +14,7 @@ import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.imageDetial.ImageDetialActivity;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Constant;
+import com.example.rookie.laminae.util.ImageLoadBuider;
 
 import java.util.List;
 
@@ -42,11 +43,7 @@ public class UserLikeAdapter extends RecyclerView.Adapter<UserLikeAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final UserPinsBean.UserPinsItem  pinsInfo = myLikes.get(position);
-        Glide.with(myContext)
-                .load(URL+pinsInfo.getFile().getKey())
-                .crossFade(1000)
-                .centerCrop()
-                .into(holder.likeCover);
+        ImageLoadBuider.ImageLoadFromParamsGeneral(myContext,holder.likeCover,pinsInfo.getFile().getKey());
         holder.likeCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,11 +60,7 @@ public class UserLikeAdapter extends RecyclerView.Adapter<UserLikeAdapter.MyView
         holder.likeBoard.setText("来自 "+pinsInfo.getBoard().getTitle()+" 画板");
         holder.likeFollow.setText("喜欢 "+pinsInfo.getLike_count()+" 转采"+pinsInfo.getRepin_count());
         holder.likeUsername.setText(pinsInfo.getUser().getUsername());
-        Glide.with(myContext)
-                .load(URL+pinsInfo.getUser().getAvatar().getKey())
-                .crossFade(1000)
-                .centerCrop()
-                .into(holder.likeUseriocn);
+        ImageLoadBuider.ImageLoadFromParamsGeneral(myContext,holder.likeUseriocn,pinsInfo.getUser().getAvatar().getKey());
 
     }
 

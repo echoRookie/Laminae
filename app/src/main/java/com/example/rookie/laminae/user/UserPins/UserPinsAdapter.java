@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.rookie.laminae.R;
+import com.example.rookie.laminae.util.ImageLoadBuider;
 
 import java.util.List;
 
@@ -44,13 +45,10 @@ public class UserPinsAdapter extends RecyclerView.Adapter<UserPinsAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         UserPinsBean.UserPinsItem  pinsInfo = myPins.get(position);
-        Glide.with(myContext)
-                .load(URL+pinsInfo.getFile().getKey())
-                .centerCrop()
-                .crossFade(1000)
-                .into(holder.pinsCover);
+        ImageLoadBuider.ImageLoadFromParamsGeneral(myContext,holder.pinsCover,pinsInfo.getFile().getKey());
         holder.pinsText.setText(pinsInfo.getRaw_text());
-        holder.pinsBoard.setText("来自 "+pinsInfo.getBoard().getTitle());
+        if (pinsInfo.getBoard().getTitle()!=null){
+        holder.pinsBoard.setText("来自 "+pinsInfo.getBoard().getTitle());}
         holder.pinsFollow.setText("采集 "+pinsInfo.getLike_count()+"分享 "+pinsInfo.getRepin_count());
     }
 

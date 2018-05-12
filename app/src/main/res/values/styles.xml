@@ -12,4 +12,9 @@
         <item name="colorAccent">@color/loginTextColor</item>
         <item name="colorControlNormal">@color/loginTextColor</item>
     </style>
+    <style name="ibtn_padding_bg">
+        <item name="android:padding">@dimen/button_padding_default</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
 </resources>

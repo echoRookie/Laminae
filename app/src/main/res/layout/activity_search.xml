@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -20,11 +20,41 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             app:queryHint="请输入搜索内容" />
-    </android.support.v7.widget.Toolbar>
 
+    </android.support.v7.widget.Toolbar>
+    <ListView
+        android:id="@+id/hint_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:text="搜索历史"
+            android:textColor="@color/secondary_text" />
+
+        <ImageButton
+            android:id="@+id/ibtn_clear_history"
+            style="@style/ibtn_padding_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close_black_24dp" />
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/flexbox_layout"
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:alignContent="flex_start"
@@ -34,6 +64,5 @@
         app:flexWrap="wrap"
         app:justifyContent="flex_start"
         app:showDivider="beginning|middle"/>
-
-
+    </ScrollView>
 </LinearLayout>

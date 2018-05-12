@@ -16,6 +16,7 @@ import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.httpUtils.RetrofitClient;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Constant;
+import com.example.rookie.laminae.util.ImageLoadBuider;
 
 import java.io.IOException;
 import java.util.List;
@@ -65,21 +66,9 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.MyView
         holder.classifyTitle.setText(myTitles.get(position));
         int index = position + 1;
 //      进行网络请求获取各个类别的数据
-        Glide.with(myContext)
-                .load(URL+myKeys.get(keysLenght*index/pinsLenght-3))
-                .crossFade(1000)
-                .centerCrop()
-                .into(holder.classifyCoverOne);
-        Glide.with(myContext)
-                .load(URL+myKeys.get(keysLenght*index/pinsLenght-2))
-                .crossFade(1000)
-                .centerCrop()
-                .into(holder.classifyCoverTwo);
-        Glide.with(myContext)
-                .load(URL+myKeys.get(keysLenght*index/pinsLenght-1))
-                .crossFade(1000)
-                .centerCrop()
-                .into(holder.classifyCoverThree);
+        ImageLoadBuider.ImageLoadFromParamsGeneral(myContext,holder.classifyCoverOne,myKeys.get(keysLenght*index/pinsLenght-3));
+        ImageLoadBuider.ImageLoadFromParamsGeneral(myContext,holder.classifyCoverTwo,myKeys.get(keysLenght*index/pinsLenght-2));
+        ImageLoadBuider.ImageLoadFromParamsGeneral(myContext,holder.classifyCoverThree,myKeys.get(keysLenght*index/pinsLenght-1));
         holder.classifyCoverOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

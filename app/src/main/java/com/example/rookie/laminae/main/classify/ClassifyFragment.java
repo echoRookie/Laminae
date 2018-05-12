@@ -3,6 +3,7 @@ package com.example.rookie.laminae.main.classify;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,11 +38,13 @@ public class ClassifyFragment extends Fragment {
     private List<String> myKeys;
     private ClassifyAdapter myAdapter;
     private int i;
-    @Nullable
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recyclerview_base,container,false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.base_recyclerView);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
 //      初始化分类列表
         String[] titles = getResources().getStringArray(R.array.title_array_all);
         String[] types = getResources().getStringArray(R.array.type_array_all);
@@ -52,6 +55,21 @@ public class ClassifyFragment extends Fragment {
             myTitles.add(titles[i]);
             myTypes.add(types[i]);
         }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.recyclerview_base,container,false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.base_recyclerView);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getPinsKeys();
+            }
+        });
         getPinsKeys();
 
         return view;
@@ -60,7 +78,7 @@ public class ClassifyFragment extends Fragment {
     /**
      * 获取每个类别的前三张图片并保存
      */
-    private void getPinsKeys(){
+    public void getPinsKeys(){
         for (i = 0;i<myTitles.size();i++){
             RetrofitClient client = RetrofitClient.getInstance();
             TypeAPI typeAPI = client.createService(TypeAPI.class);
@@ -84,6 +102,7 @@ public class ClassifyFragment extends Fragment {
                                   recyclerView.setLayoutManager(manager);
                                   recyclerView.setAdapter(myAdapter);
                                   Log.d("class", "onNext: "+myKeys.size()+"AAAa");
+                                  swipeRefreshLayout.setRefreshing(false);
                               }
                           }
 
@@ -102,5 +121,13 @@ public class ClassifyFragment extends Fragment {
                         }
                     });
         }
+    }
+
+    public SwipeRefreshLayout getSwipeRefreshLayout() {
+        return swipeRefreshLayout;
+    }
+
+    public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
+        this.swipeRefreshLayout = swipeRefreshLayout;
     }
 }

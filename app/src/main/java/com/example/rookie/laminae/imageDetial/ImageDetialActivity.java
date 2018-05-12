@@ -1,29 +1,51 @@
 package com.example.rookie.laminae.imageDetial;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.rookie.laminae.API.DownUpAPI;
 import com.example.rookie.laminae.API.ImageDetailAPI;
+import com.example.rookie.laminae.API.OperateAPI;
 import com.example.rookie.laminae.R;
+import com.example.rookie.laminae.dialog.GatherPinsDialog;
+import com.example.rookie.laminae.entity.LikePinsOperateBean;
 import com.example.rookie.laminae.httpUtils.RetrofitClient;
 import com.example.rookie.laminae.main.home.ScrollListener;
 import com.example.rookie.laminae.user.UserLike.UserLikeAdapter;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
+import com.example.rookie.laminae.util.FileUtils;
 import com.example.rookie.laminae.util.ImageLoadBuider;
+import com.example.rookie.laminae.util.SPUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +58,8 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 public class ImageDetialActivity extends AppCompatActivity {
+    private PinsDetialBean pinsDetialBean;
+    private String pinsKey;//需要加载图片的key；
     private int pinsId;//需要加载的图片id
     private CollapsingToolbarLayout collToolbar;
     private ImageView collToolbarBackground;
@@ -56,6 +80,9 @@ public class ImageDetialActivity extends AppCompatActivity {
     private GridLayoutManager gridLayoutManager;
     private List<UserPinsBean.UserPinsItem> recommendPins;
     private NestedScrollView nestedScrollView;
+    private Toolbar toolbar;
+    private boolean is_like;
+    private FloatingActionButton pinsButton;//采集按钮
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +113,8 @@ public class ImageDetialActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.image_detial_recyclerView);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setNestedScrollingEnabled(false);
+        toolbar = (Toolbar) findViewById(R.id.user_toolbar);
+        setSupportActionBar(toolbar);
         setInfo();
         getPinsRecommendFirst();
         recyclerView.addOnScrollListener(new ScrollListener((GridLayoutManager) recyclerView.getLayoutManager()) {
@@ -94,7 +123,13 @@ public class ImageDetialActivity extends AppCompatActivity {
                 getPinsRecommendScroll();
             }
         });
-
+        pinsButton = (FloatingActionButton) findViewById(R.id.image_detial_floatButton);
+        pinsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+            }
+        });
 
 
 
@@ -108,7 +143,7 @@ public class ImageDetialActivity extends AppCompatActivity {
     public void setInfo(){
         RetrofitClient client = RetrofitClient.getInstance();
         ImageDetailAPI imageDetialAPI = client.createService(ImageDetailAPI.class);
-        Observable<PinsDetialBean> observable = imageDetialAPI.httpsPinsDetailRx(Base64.mClientInto,String.valueOf(pinsId));
+        Observable<PinsDetialBean> observable = imageDetialAPI.httpsPinsDetailRx((String) SPUtils.get(this,Constant.USERAUthorization,Base64.mClientInto),String.valueOf(pinsId));
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<PinsDetialBean>() {
@@ -119,8 +154,11 @@ public class ImageDetialActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(PinsDetialBean value) {
+                        pinsKey = value.getPin().getFile().getKey();
+                        pinsDetialBean = value;
+
                         Log.d("image", "onNext: "+value.getPin().getBoard_id());
-                        ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(),collToolbarBackground,value.getPin().getFile().getKey());
+                        ImageLoadBuider.ImageLoadFromParamsGeneral(getApplicationContext(),collToolbarBackground,value.getPin().getFile().getKey());
                         title.setText(value.getPin().getRaw_text());
                         link.setText(value.getPin().getLink());
                         pins.setText("采集 "+value.getPin().getRepin_count());
@@ -131,6 +169,8 @@ public class ImageDetialActivity extends AppCompatActivity {
                         ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(),boardCoverTwo,value.getPin().getBoard().getPins().get(1).getFile().getKey());
                         ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(),boardCoverThree,value.getPin().getBoard().getPins().get(2).getFile().getKey());
                         ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(),boardCoverFour,value.getPin().getBoard().getPins().get(3).getFile().getKey());
+                        is_like = value.getPin().isLiked();
+                        Log.d("imagedddd", "onNext: "+is_like);
                         boardTitle.setText(value.getPin().getBoard().getTitle());
 
 
@@ -229,5 +269,155 @@ public class ImageDetialActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.image_detial_menu,menu);
+        return true;
+    }
+
+    /**
+     * toolbar的菜单选中操作
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_like:
+                userOperateLike();
+                break;
+            case R.id.action_download:
+                if(ContextCompat.checkSelfPermission(ImageDetialActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager
+                        .PERMISSION_GRANTED) {
+                    Log.d("zzzzzzzzzzzzzz", "onCreate: "+"没有");
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            1);
+
+                }
+                else {
+                    Log.d("zzzzzzzzzzzzzzz", "onCreate: "+"有");
+                }
+
+                userOperateDownLoad();
+                this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+
+                        Uri.fromFile(new File(FileUtils.getDirsFile().getPath()))));
+                break;
+
+
+
+        }
+        return true;
+    }
+    @Override
+    protected boolean onPrepareOptionsPanel(View view, Menu menu) {
+        if (menu != null) {
+            if (menu.getClass() == MenuBuilder.class) {
+                try {
+                    Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                } catch (Exception e) {
+                }
+            }
+        }
+        return super.onPrepareOptionsPanel(view, menu);
+    }
+
+    /**
+     * 用户对图片进行like操作
+     */
+    private void userOperateLike(){
+        Toast.makeText(this, "like", Toast.LENGTH_SHORT).show();
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+        OperateAPI operateAPI = retrofitClient.createService(OperateAPI.class);
+        String m = (String) SPUtils.get(this, Constant.USERAUthorization, Base64.mClientInto);
+        Observable<LikePinsOperateBean> observable = operateAPI.httpsLikeOperate(m, String.valueOf(pinsId), "like");
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LikePinsOperateBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(LikePinsOperateBean value) {
+                        is_like = !is_like;
+                        if (is_like)
+                            toolbar.getMenu().findItem(R.id.action_like).setTitle("已添加到喜欢");
+                        if (!is_like)
+                            toolbar.getMenu().findItem(R.id.action_like).setTitle("喜欢");
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+    private void userOperateDownLoad(){
+        Toast.makeText(this,"下载",Toast.LENGTH_SHORT).show();
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+        DownUpAPI downUpAPI = retrofitClient.createService(DownUpAPI.class);
+        Observable<ResponseBody> observable = downUpAPI.httpDownImage(pinsKey);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Observer<ResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody value) {
+                        FileUtils.writeResponseBodyToDisk(FileUtils.getDirsFile(),value,String.valueOf(pinsId)+".jpg");
+                        Log.d("loadsuccess", "onNext: "+value.toString());
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("loadd", "onError: "+e.toString());
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+       switch (requestCode){
+           case 1:
+               if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                   File file = FileUtils.getDirsFile();
+                   if (file.exists()){
+                       Log.d("loaddd", "onOptionsItemSelected: "+"存在");
+                   }
+                   else{
+                       Log.d("loadddddd", "onOptionsItemSelected: "+"不存在");
+                   }
+               }
+       }
+    }
+
+    /**
+     * 展示采集对话框
+     */
+    public void showDialog(){
+        GatherPinsDialog gatherPinsDialog = new GatherPinsDialog();
+        gatherPinsDialog.show(getSupportFragmentManager(),"gatherPinsDialog");
     }
 }

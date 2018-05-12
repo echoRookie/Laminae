@@ -370,11 +370,11 @@ public class UserBean implements Parcelable{
         private String farm;
 
         private String frames;
-        private String height;
+        private int height;
         private String id;
         private String key;
         private String type;
-        private String width;
+        private int width;
 
         public String getBucket() {
             return bucket;
@@ -400,11 +400,11 @@ public class UserBean implements Parcelable{
             this.frames = frames;
         }
 
-        public String getHeight() {
+        public int getHeight() {
             return height;
         }
 
-        public void setHeight(String height) {
+        public void setHeight(int height) {
             this.height = height;
         }
 
@@ -432,11 +432,11 @@ public class UserBean implements Parcelable{
             this.type = type;
         }
 
-        public String getWidth() {
+        public int getWidth() {
             return width;
         }
 
-        public void setWidth(String width) {
+        public void setWidth(int width) {
             this.width = width;
         }
     }

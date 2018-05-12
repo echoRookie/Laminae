@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item android:id="@+id/action_like"
+        android:title="喜欢"
+        tools:icon="@drawable/action_unlike"
+        app:showAsAction="always"
+        />
+    <item android:id="@+id/action_download"
+        android:title="下载"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/action_gather"
+        android:title="采集"
+        app:showAsAction="never" />
+
+</menu>

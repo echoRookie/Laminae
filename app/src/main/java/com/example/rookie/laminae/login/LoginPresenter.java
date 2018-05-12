@@ -26,6 +26,7 @@ public class LoginPresenter extends BasePresenter<LoginView> implements CallBack
 
     @Override
     public void onFailure() {
+        getView().showToast("账号密码错误");
 
     }
 

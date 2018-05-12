@@ -89,7 +89,51 @@ public class ImageLoadBuider {
                 .into(view);
 
     }
-    public static void ImageFromParams(){}
+
+    /**按尺寸加载大中小图
+     * @param width
+     * @param height
+     * @param context
+     * @param view
+     * @param string
+     */
+    public static void ImageLoadFromParamsBig(int width,int height,Context context,ImageView view,String string){
+        String url= "http://img.hb.aicdn.com/";
+        String image_big = "_fw658";
+        Glide.with(context)
+                .load(url+string+image_big)
+                .override(width,height)
+                .centerCrop()
+                .crossFade(1000)
+                .into(view);
+    }
+    public static void ImageLoadFromParamsGeneral(Context context,ImageView view,String string){
+        String url= "http://img.hb.aicdn.com/";
+        String image_general = "_fw320sf";
+        Glide.with(context)
+                .load(url+string+image_general)
+                .centerCrop()
+                .crossFade(1000)
+                .into(view);
+    }
+    public static void ImageLoadFromParamsSmall(Context context,ImageView view,String string){
+        String url= "http://img.hb.aicdn.com/";
+        String image_small = "_sq75sf";
+        Glide.with(context)
+                .load(url+string+image_small)
+                .centerCrop()
+                .crossFade(1000)
+                .into(view);
+    }
+    public static void ImageLoadFromParams(Context context,ImageView view,String string){
+        String url= "http://img.hb.aicdn.com/";
+        Glide.with(context)
+                .load(url+string)
+                .centerCrop()
+                .crossFade(1000)
+                .into(view);
+    }
+
 //    public static Bitmap ImageAsBitmap(final Context context,final Bitmap bitmap){
 //        new Thread(new Runnable() {
 //            @Override

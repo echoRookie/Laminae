@@ -232,6 +232,16 @@ public class PinsDetialBean {
         private int repin_count;
         private int is_private;
         private String orig_source;
+        private boolean liked;
+
+        public boolean isLiked() {
+            return liked;
+        }
+
+        public void setLiked(boolean liked) {
+            this.liked = liked;
+        }
+
         private User user;
         private Board board;
 
