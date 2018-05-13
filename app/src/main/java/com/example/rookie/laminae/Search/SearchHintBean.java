@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.Search;
+package com.example.rookie.laminae.search;
 
 import java.util.List;
 

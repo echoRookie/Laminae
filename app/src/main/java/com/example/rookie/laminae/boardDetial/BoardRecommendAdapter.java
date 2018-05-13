@@ -1,6 +1,7 @@
 package com.example.rookie.laminae.boardDetial;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.entity.PinsMainEntity;
+import com.example.rookie.laminae.imageDetial.ImageDetialActivity;
+import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
 
 import java.util.List;
@@ -36,10 +39,20 @@ public class BoardRecommendAdapter extends RecyclerView.Adapter<BoardRecommendAd
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        PinsMainEntity pinsMainEntity = myList.get(position);
+        final PinsMainEntity pinsMainEntity = myList.get(position);
         ImageLoadBuider.ImageLoadCenterCrop(myContext,holder.cover,pinsMainEntity.getFile().getKey());
         holder.text.setText(pinsMainEntity.getRaw_text());
         holder.text.setText("喜欢"+pinsMainEntity.getLike_count()+"采集"+pinsMainEntity.getRepin_count());
+        holder.cover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pinsId = pinsMainEntity.getPin_id();
+                Intent intent = new Intent(myContext, ImageDetialActivity.class);
+                intent.putExtra(Constant.PINSID,pinsId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                myContext.startActivity(intent);
+            }
+        });
 
     }
 

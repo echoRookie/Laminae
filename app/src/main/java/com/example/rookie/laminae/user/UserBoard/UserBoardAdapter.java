@@ -1,6 +1,7 @@
 package com.example.rookie.laminae.user.UserBoard;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.rookie.laminae.R;
+import com.example.rookie.laminae.dialog.BoardEditDialog;
 import com.example.rookie.laminae.util.ImageLoadBuider;
 
 import java.util.List;
@@ -22,9 +24,14 @@ public class UserBoardAdapter extends RecyclerView.Adapter<UserBoardAdapter.MyVi
     private List<UserBoardBean.BoardItemInfo> myBoards;
     private Context myContext;
     private String URL = "http://img.hb.aicdn.com/";
-    public UserBoardAdapter(List<UserBoardBean.BoardItemInfo> list,Context context){
+    private FragmentManager fragmentManager;
+    private String boardId;
+    private String boardTitle;
+    private String boardDesciption;
+    public UserBoardAdapter(List<UserBoardBean.BoardItemInfo> list,Context context,FragmentManager fragmentManager){
         this.myBoards = list;
         this.myContext = context;
+        this.fragmentManager = fragmentManager;
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,10 +43,22 @@ public class UserBoardAdapter extends RecyclerView.Adapter<UserBoardAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         UserBoardBean.BoardItemInfo boardInfo = myBoards.get(position);
-        ImageLoadBuider.ImageLoadFromParamsGeneral(myContext,holder.boardCover,boardInfo.getPins().get(0).getFile().getKey());
+        if(boardInfo.getPins().size()>0){
+            ImageLoadBuider.ImageLoadFromParamsGeneral(myContext,holder.boardCover,boardInfo.getPins().get(0).getFile().getKey());
+        }
+
+        boardId = String.valueOf(boardInfo.getBoard_id());
+        boardTitle = boardInfo.getTitle();
+        boardDesciption = boardInfo.getDescription();
         holder.boardTitle.setText(boardInfo.getTitle());
         holder.boardFollow.setText("采集 "+boardInfo.getPin_count()+"关注 "+boardInfo.getFollow_count());
         holder.boardOperate.setText("画板编辑");
+        holder.boardOperate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                  showDialog();
+            }
+        });
 
     }
 
@@ -60,5 +79,9 @@ public class UserBoardAdapter extends RecyclerView.Adapter<UserBoardAdapter.MyVi
             boardFollow = (TextView) itemView.findViewById(R.id.user_board_follow);
             boardOperate = (TextView)itemView.findViewById(R.id.user_board_operate);
         }
+    }
+    public void showDialog(){
+        BoardEditDialog boardEditDialog = BoardEditDialog.newInstance(boardId,boardTitle,boardDesciption);
+        boardEditDialog.show(fragmentManager,"boardEdit");
     }
 }

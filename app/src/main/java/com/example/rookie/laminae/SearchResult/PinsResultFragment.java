@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.SearchResult;
+package com.example.rookie.laminae.searchResult;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,9 +12,8 @@ import android.view.ViewGroup;
 
 import com.example.rookie.laminae.API.SearchAPI;
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.Search.SearchImageBean;
+import com.example.rookie.laminae.search.SearchImageBean;
 import com.example.rookie.laminae.httpUtils.RetrofitClient;
-import com.example.rookie.laminae.user.UserBoard.UserBoardFragment;
 import com.example.rookie.laminae.user.UserLike.UserLikeAdapter;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;

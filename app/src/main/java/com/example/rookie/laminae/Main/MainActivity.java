@@ -21,15 +21,17 @@ import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.example.rookie.laminae.aboutMe.AboutMeActivity;
 import com.example.rookie.laminae.error.ErrorFragment;
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.Search.SearchActivity;
+import com.example.rookie.laminae.follow.UserFollowActivity;
+import com.example.rookie.laminae.search.SearchActivity;
+import com.example.rookie.laminae.login.LoginActivity;
 import com.example.rookie.laminae.main.classify.ClassifyFragment;
 import com.example.rookie.laminae.main.home.HomeFragment;
 import com.example.rookie.laminae.user.UserInfoActivity;
 import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
-import com.example.rookie.laminae.util.NetUtils;
 import com.example.rookie.laminae.util.SPUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -63,11 +65,23 @@ public class MainActivity extends AppCompatActivity {
                 if(item.getItemId() == R.id.nav_logout){
                     drawerLayout.closeDrawers();
                     SPUtils.clear(getApplicationContext());
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
                     finish();
                 }
                 if(item.getItemId() == R.id.nav_search){
                     drawerLayout.closeDrawers();
                     Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                    startActivity(intent);
+                }
+                if (item.getItemId() ==R.id.nav_follow){
+                    drawerLayout.closeDrawers();
+                    Intent intent = new Intent(MainActivity.this, UserFollowActivity.class);
+                    startActivity(intent);
+                }
+                if (item.getItemId() == R.id.nav_about){
+                    drawerLayout.closeDrawers();
+                    Intent intent = new Intent(MainActivity.this, AboutMeActivity.class);
                     startActivity(intent);
                 }
                 return true;

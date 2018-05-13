@@ -63,7 +63,7 @@ public class UserBoardFragment extends Fragment {
     public void getBoardInfoFirst() {
         RetrofitClient client = RetrofitClient.getInstance();
         UserAPI userAPi = client.createService(UserAPI.class);
-        Observable<UserBoardBean> observable = userAPi.httpsUserBoardRx(Base64.mClientInto, "22282493", 2);
+        Observable<UserBoardBean> observable = userAPi.httpsUserBoardRx(Base64.mClientInto, "22282493", 20);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<UserBoardBean>() {
@@ -74,8 +74,8 @@ public class UserBoardFragment extends Fragment {
 
                     @Override
                     public void onNext(UserBoardBean value) {
-                        Log.d("UserBoardFragment", "onNext: " + value.getBoards().get(0).getTitle());
-                        UserBoardAdapter myAdapter = new UserBoardAdapter(value.getBoards(), getContext());
+//                        Log.d("UserBoardFragment", "onNext: " + value.getBoards().size());
+                        UserBoardAdapter myAdapter = new UserBoardAdapter(value.getBoards(), getContext(),getFragmentManager());
                         GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
                         recyclerView.setLayoutManager(manager);
                         recyclerView.setAdapter(myAdapter);

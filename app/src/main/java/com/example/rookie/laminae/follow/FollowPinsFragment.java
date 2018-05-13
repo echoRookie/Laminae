@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.searchResult;
+package com.example.rookie.laminae.follow;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,12 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.rookie.laminae.API.SearchAPI;
+import com.example.rookie.laminae.API.FollowingAPI;
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.search.SearchBoardListBean;
 import com.example.rookie.laminae.httpUtils.RetrofitClient;
+import com.example.rookie.laminae.user.UserLike.UserLikeAdapter;
+import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
+import com.example.rookie.laminae.util.SPUtils;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -24,50 +26,36 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by rookie on 2018/5/7.
+ * Created by rookie on 2018/5/13.
  */
 
-public class BoardResultFrgment extends Fragment {
-    private BoardResultAdapter myAdapter;
+public class FollowPinsFragment extends Fragment {
     private RecyclerView recyclerView;
-    private static final String SEARCHKEY = Constant.SEARCHKEY;
-    private String searchKey;//搜索关键字
-    private int index = 1;//联网起始页
-    //    返回实例本身
-    public static BoardResultFrgment newInstance(String searchKey) {
-        BoardResultFrgment boardResultFrgment = new BoardResultFrgment();
-        Bundle bundle = new Bundle();
-        bundle.putString(SEARCHKEY, searchKey);
-        boardResultFrgment.setArguments(bundle);
-        return boardResultFrgment;
-    }
-
+    private UserLikeAdapter myAdapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recyclerview_base,container,false);
-        Bundle bundle = getArguments();
-        searchKey = bundle.getString(SEARCHKEY);
         recyclerView = (RecyclerView) view.findViewById(R.id.base_recyclerView);
-        getBoardHttp();
+        getPinsHttps();
         return view;
     }
-    public void getBoardHttp(){
-        RetrofitClient client = RetrofitClient.getInstance();
-        SearchAPI searchAPI = client.createService(SearchAPI.class);
-        Observable<SearchBoardListBean> observable = searchAPI.httpsBoardSearchRx(Base64.mClientInto,searchKey,index,20);
+
+    private void getPinsHttps() {
+        RetrofitClient re = RetrofitClient.getInstance();
+        FollowingAPI followAPI = re.createService(FollowingAPI.class);
+        Observable<UserPinsBean> observable = followAPI.httpsMyFollowingPinsRx((String) SPUtils.get(getContext(), Constant.USERAUthorization, Base64.mClientInto),20);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<SearchBoardListBean>() {
+                .subscribe(new Observer<UserPinsBean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(SearchBoardListBean value) {
-                        Log.d("BoardResultFragment", "onNext: "+value.getBoards().size());
-                       myAdapter = new BoardResultAdapter(getContext(),value.getBoards());
+                    public void onNext(UserPinsBean value) {
+                        myAdapter = new UserLikeAdapter(value.getPins(),getContext());
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
                         recyclerView.setLayoutManager(gridLayoutManager);
                         recyclerView.setAdapter(myAdapter);

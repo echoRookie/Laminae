@@ -1,9 +1,9 @@
 package com.example.rookie.laminae.API;
 
-import com.example.rookie.laminae.Search.SearchBoardListBean;
-import com.example.rookie.laminae.Search.SearchHintBean;
-import com.example.rookie.laminae.Search.SearchImageBean;
-import com.example.rookie.laminae.Search.SearchPeopleListBean;
+import com.example.rookie.laminae.search.SearchBoardListBean;
+import com.example.rookie.laminae.search.SearchHintBean;
+import com.example.rookie.laminae.search.SearchImageBean;
+import com.example.rookie.laminae.search.SearchPeopleListBean;
 import com.example.rookie.laminae.util.Constant;
 
 import io.reactivex.Observable;

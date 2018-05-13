@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.Search;
+package com.example.rookie.laminae.search;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -16,12 +16,11 @@ import android.widget.Toast;
 
 import com.example.rookie.laminae.API.SearchAPI;
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.SearchResult.SearchResultActivity;
+import com.example.rookie.laminae.searchResult.SearchResultActivity;
 import com.example.rookie.laminae.httpUtils.RetrofitClient;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
 import com.google.android.flexbox.FlexboxLayout;
-import com.jakewharton.rxbinding2.widget.RxAutoCompleteTextView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.ArrayList;

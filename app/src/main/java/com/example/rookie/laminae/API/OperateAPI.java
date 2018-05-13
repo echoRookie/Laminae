@@ -59,8 +59,7 @@ public interface OperateAPI {
     @FormUrlEncoded
     @POST("boards/")
     Observable<UserBoardSingleBean> httpsAddBoard(
-            @Header(Constant.Authorization) String authorization, @Field("title") String title, @Field("description") String description, @Field("category") String category
-    );
+            @Header(Constant.Authorization) String authorization, @Field("title") String title, @Field("description") String description, @Field("category") String category);
 
     //修改某个画板的信息
     //https://api.huaban.com/boards/29646779 category=photography&description=%E6%B7%BB%E5%8A%A0%E6%8F%8F%E8%BF%B0&title=%E6%B7%BB%E5%8A%A0

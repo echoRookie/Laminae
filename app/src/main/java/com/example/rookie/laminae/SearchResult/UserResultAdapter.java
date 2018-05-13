@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.SearchResult;
+package com.example.rookie.laminae.searchResult;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.Search.SearchPeopleListBean;
+import com.example.rookie.laminae.search.SearchPeopleListBean;
 import com.example.rookie.laminae.util.ImageLoadBuider;
 
 import java.util.List;

@@ -16,30 +16,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.rookie.laminae.API.UserAPI;
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
+import com.example.rookie.laminae.dialog.BoardAddDialog;
 import com.example.rookie.laminae.login.UserBean;
 import com.example.rookie.laminae.user.UserBoard.UserBoardFragment;
-import com.example.rookie.laminae.user.UserLike.UserLikeAdapter;
 import com.example.rookie.laminae.user.UserLike.UserLikeFragment;
-import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.user.UserPins.UserPinsFragment;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
+import com.example.rookie.laminae.util.SPUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.BlurTransformation;
-import okhttp3.ResponseBody;
 
 public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
     private Toolbar toolbar;
@@ -54,12 +45,21 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
     private UserViewPagerAdapter myAdapter;
     private UserBean userBean;
     private UserInfoPresenter userInfoPresenter;
+    private ImageView addBoard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
         toolbar = (Toolbar) findViewById(R.id.user_toolbar) ;
+        addBoard = (ImageView) findViewById(R.id.user_add_board);
+        addBoard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BoardAddDialog boardAddDialog = new BoardAddDialog();
+                boardAddDialog.show(getSupportFragmentManager(),"");
+            }
+        });
 //      得到用户Id，初始化用户信息
         userId = getIntent().getIntExtra(Constant.USERID,0);
         haederBackground = (ImageView) findViewById(R.id.header_image_background);
@@ -81,36 +81,9 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
         userInfoPresenter = new UserInfoPresenter();
         userInfoPresenter.attachView(this);
         userInfoPresenter.getUserInfoData(String.valueOf(userId));
-        RetrofitClient client = RetrofitClient.getInstance();
-        UserAPI userAPi = client.createService(UserAPI.class);
-        Observable<ResponseBody> observable = userAPi.httpsUserFollowsPinsRx(Base64.mClientInto,String.valueOf(userId),20);
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ResponseBody>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        String m = (String) SPUtils.get(getApplicationContext(),Constant.USERAUthorization,Base64.mClientInto);
+        Log.d("userlogin", "onCreate: "+m);
 
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody value) {
-                        try {
-                            Log.d("userloginac", "onNext: "+value.string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
     }
 
 

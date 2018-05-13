@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.searchResult;
+package com.example.rookie.laminae.follow;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.search.SearchBoardListBean;
 import com.example.rookie.laminae.boardDetial.BoardDetialActivity;
+import com.example.rookie.laminae.entity.FollowBoardListBean;
+import com.example.rookie.laminae.search.SearchBoardListBean;
+import com.example.rookie.laminae.searchResult.BoardResultAdapter;
 import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
 
@@ -20,23 +22,23 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by rookie on 2018/5/7.
- * 画板搜索结果的适配器
+ * Created by rookie on 2018/5/13.
  */
 
-public class BoardResultAdapter extends RecyclerView.Adapter<BoardResultAdapter.MyViewHolder> {
-    private Context myContext;
+public class FollowBoardAdapter extends RecyclerView.Adapter<FollowBoardAdapter.MyViewHolder> {
     private List<SearchBoardListBean.BoardPinsBean> myBoards;
+    private Context myContext;
+
+    public FollowBoardAdapter(List<SearchBoardListBean.BoardPinsBean> myList, Context context) {
+        this.myBoards = myList;
+        this.myContext = context;
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.result_board_item,parent,false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
-    }
-
-    public BoardResultAdapter(Context myContext, List<SearchBoardListBean.BoardPinsBean> myBoards) {
-        this.myContext = myContext;
-        this.myBoards = myBoards;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class BoardResultAdapter extends RecyclerView.Adapter<BoardResultAdapter.
         holder.boardUsername.setText(boardPinsBean.getUser().getUsername());
         ImageLoadBuider.ImageLoadFromParamsGeneral(myContext,holder.boardUserIcon,boardPinsBean.getUser().getAvatar().getKey());
         holder.boardFollowCount.setText("喜欢"+boardPinsBean.getLike_count()+" 关注"+boardPinsBean.getFollow_count());
-        holder.boardFlag.setText("关注");
+        holder.boardFlag.setText("已关注");
         holder.boardCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +60,6 @@ public class BoardResultAdapter extends RecyclerView.Adapter<BoardResultAdapter.
                 myContext.startActivity(intent);
             }
         });
-
     }
 
     @Override
@@ -68,7 +69,7 @@ public class BoardResultAdapter extends RecyclerView.Adapter<BoardResultAdapter.
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView boardCover;
-        TextView  boardTitle;
+        TextView boardTitle;
         TextView  boardUsername;
         CircleImageView boardUserIcon;
         TextView boardFollowCount;
@@ -82,5 +83,6 @@ public class BoardResultAdapter extends RecyclerView.Adapter<BoardResultAdapter.
             boardFollowCount = (TextView) itemView.findViewById(R.id.result_board_follow);
             boardFlag = (TextView) itemView.findViewById(R.id.result_board_flag);
         }
+
     }
 }

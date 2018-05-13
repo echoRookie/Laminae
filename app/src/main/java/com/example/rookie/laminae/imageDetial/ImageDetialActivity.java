@@ -67,6 +67,23 @@ public class ImageDetialActivity extends AppCompatActivity {
     private TextView link;
     private TextView pins;//采集数量
     private TextView like;//喜欢数量
+
+    public int getPinsId() {
+        return pinsId;
+    }
+
+    public void setPinsId(int pinsId) {
+        this.pinsId = pinsId;
+    }
+
+    public String getPinsDescription() {
+        return pinsDescription;
+    }
+
+    public void setPinsDescription(String pinsDescription) {
+        this.pinsDescription = pinsDescription;
+    }
+
     private CircleImageView userIcon;
     private TextView username;
     private ImageView boardCoverOne;
@@ -82,6 +99,7 @@ public class ImageDetialActivity extends AppCompatActivity {
     private NestedScrollView nestedScrollView;
     private Toolbar toolbar;
     private boolean is_like;
+    private String pinsDescription;
     private FloatingActionButton pinsButton;//采集按钮
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,15 +132,6 @@ public class ImageDetialActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setNestedScrollingEnabled(false);
         toolbar = (Toolbar) findViewById(R.id.user_toolbar);
-        setSupportActionBar(toolbar);
-        setInfo();
-        getPinsRecommendFirst();
-        recyclerView.addOnScrollListener(new ScrollListener((GridLayoutManager) recyclerView.getLayoutManager()) {
-            @Override
-            public void onLoadMore() {
-                getPinsRecommendScroll();
-            }
-        });
         pinsButton = (FloatingActionButton) findViewById(R.id.image_detial_floatButton);
         pinsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +139,16 @@ public class ImageDetialActivity extends AppCompatActivity {
                 showDialog();
             }
         });
+        setSupportActionBar(toolbar);
+        setInfo(pinsId);
+        getPinsRecommendFirst();
+        recyclerView.addOnScrollListener(new ScrollListener((GridLayoutManager) recyclerView.getLayoutManager()) {
+            @Override
+            public void onLoadMore() {
+                getPinsRecommendScroll();
+            }
+        });
+
 
 
 
@@ -140,10 +159,10 @@ public class ImageDetialActivity extends AppCompatActivity {
     /**
      * 根据网络请求结果设置界面信息
      */
-    public void setInfo(){
+    public void setInfo(int id){
         RetrofitClient client = RetrofitClient.getInstance();
         ImageDetailAPI imageDetialAPI = client.createService(ImageDetailAPI.class);
-        Observable<PinsDetialBean> observable = imageDetialAPI.httpsPinsDetailRx((String) SPUtils.get(this,Constant.USERAUthorization,Base64.mClientInto),String.valueOf(pinsId));
+        Observable<PinsDetialBean> observable = imageDetialAPI.httpsPinsDetailRx((String) SPUtils.get(this,Constant.USERAUthorization,Base64.mClientInto),String.valueOf(id));
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<PinsDetialBean>() {
@@ -156,7 +175,7 @@ public class ImageDetialActivity extends AppCompatActivity {
                     public void onNext(PinsDetialBean value) {
                         pinsKey = value.getPin().getFile().getKey();
                         pinsDetialBean = value;
-
+                        pinsDescription = value.getPin().getRaw_text();
                         Log.d("image", "onNext: "+value.getPin().getBoard_id());
                         ImageLoadBuider.ImageLoadFromParamsGeneral(getApplicationContext(),collToolbarBackground,value.getPin().getFile().getKey());
                         title.setText(value.getPin().getRaw_text());
@@ -165,10 +184,12 @@ public class ImageDetialActivity extends AppCompatActivity {
                         like.setText("喜欢 "+value.getPin().getLike_count());
                         ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(),userIcon,value.getPin().getUser().getAvatar().getKey());
                         username.setText(value.getPin().getUser().getUsername());
-                        ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(),boardCoverOne,value.getPin().getBoard().getPins().get(0).getFile().getKey());
-                        ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(),boardCoverTwo,value.getPin().getBoard().getPins().get(1).getFile().getKey());
-                        ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(),boardCoverThree,value.getPin().getBoard().getPins().get(2).getFile().getKey());
-                        ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(),boardCoverFour,value.getPin().getBoard().getPins().get(3).getFile().getKey());
+                        if(value.getPin().getBoard().getPins().size()>=4) {
+                            ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(), boardCoverOne, value.getPin().getBoard().getPins().get(0).getFile().getKey());
+                            ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(), boardCoverTwo, value.getPin().getBoard().getPins().get(1).getFile().getKey());
+                            ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(), boardCoverThree, value.getPin().getBoard().getPins().get(2).getFile().getKey());
+                            ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(), boardCoverFour, value.getPin().getBoard().getPins().get(3).getFile().getKey());
+                        }
                         is_like = value.getPin().isLiked();
                         Log.d("imagedddd", "onNext: "+is_like);
                         boardTitle.setText(value.getPin().getBoard().getTitle());
