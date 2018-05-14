@@ -45,5 +45,7 @@ dependencies {
     compile 'jp.wasabeef:glide-transformations:2.0.1'
 //    Flexbox
     compile 'com.google.android:flexbox:0.3.2'
+//    SQLite
+    compile 'org.litepal.android:core:1.4.1'
     testCompile 'junit:junit:4.12'
 }

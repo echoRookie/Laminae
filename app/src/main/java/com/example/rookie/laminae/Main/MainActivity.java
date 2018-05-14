@@ -1,6 +1,8 @@
 package com.example.rookie.laminae.main;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,21 +12,37 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.example.rookie.laminae.aboutMe.AboutMeActivity;
+import com.example.rookie.laminae.aboutme.AboutMeActivity;
+import com.example.rookie.laminae.api.NewsAPI;
+import com.example.rookie.laminae.db.Category;
+import com.example.rookie.laminae.entity.NewsDataDetial;
+import com.example.rookie.laminae.entity.NewsList;
 import com.example.rookie.laminae.error.ErrorFragment;
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.follow.UserFollowActivity;
+import com.example.rookie.laminae.httputils.NewsRetrofitClient;
+import com.example.rookie.laminae.main.classify.SelectAdapter;
+import com.example.rookie.laminae.main.classify.UnselectAdapter;
+import com.example.rookie.laminae.main.news.NewsFragment;
 import com.example.rookie.laminae.search.SearchActivity;
 import com.example.rookie.laminae.login.LoginActivity;
 import com.example.rookie.laminae.main.classify.ClassifyFragment;
@@ -33,8 +51,22 @@ import com.example.rookie.laminae.user.UserInfoActivity;
 import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
 import com.example.rookie.laminae.util.SPUtils;
+import com.google.gson.Gson;
+
+import org.litepal.crud.DataSupport;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
@@ -43,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationBar bottomNavigationBar;
     private ClassifyFragment classifyFragment;
     private HomeFragment homeFragment;
+    private NewsFragment newsFragment;
     private ErrorFragment errorFragment;
     private Fragment myFragment;
     private FragmentManager fragmentManager;
@@ -50,6 +83,17 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private long mExitTime;
+    private PopupWindow window;//弹出popupwindow窗体
+    private Window myWindow;
+    private ImageView popupWindowBack;
+    private RecyclerView selectRecycler;
+    private RecyclerView unSelectRecycler;
+    private SelectAdapter selectAdapter;
+    private UnselectAdapter unSelectAdapter;
+    private List<String> selectListName;
+    private List<String> selectListType;
+    private List<String> unselectListName;
+    private List<String> unselectListType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         homeFragment = new HomeFragment();
         classifyFragment = new ClassifyFragment();
         errorFragment = new ErrorFragment();
+        newsFragment = new NewsFragment();
 //        if(NetUtils.isConnected(getApplicationContext())){
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -127,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
      * usericon 用户头像
      */
     public void init(){
+        setCategory();
         View view = navigationView.getHeaderView(0);
         userIcon = (CircleImageView) view.findViewById(R.id.nav_header_image);
         username = (TextView) view.findViewById(R.id.nav_header_name);
@@ -186,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
                            }
                            break;
                        case 2:
+                           switchFragment(newsFragment);
                            toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarMore));
                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                Window window = getWindow();
@@ -267,6 +314,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
+    }
+
     /*back键点击的监听实现再按一次退出程序*/
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -280,6 +334,109 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.category_edit:
+                showPopWindow();
+        }
+        return true;
+    }
+
+    private void showPopWindow() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+         View view = inflater.inflate(R.layout.popup_window, null);
+
+
+        // 下面是两种方法得到宽度和高度
+
+        window = new PopupWindow(view,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
+
+        // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
+        window.setTouchable(true);
+        window.setFocusable(true);
+        window.setOutsideTouchable(true);
+        // 实例化一个ColorDrawable颜色，16进制，前两位表示透明度
+        ColorDrawable dw = new ColorDrawable(0xffffffff);
+        window.setBackgroundDrawable(dw);
+
+//        //popupWindow 内部控件的初始化
+        selectRecycler = (RecyclerView) window.getContentView().findViewById(R.id.select_recycler);
+        unSelectRecycler = (RecyclerView) window.getContentView().findViewById(R.id.unselect_recycler);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3);
+        GridLayoutManager gridLayoutManagerOne = new GridLayoutManager(getApplicationContext(),3);
+        selectRecycler.setLayoutManager(gridLayoutManager);
+        unSelectRecycler.setLayoutManager(gridLayoutManagerOne);
+        selectAdapter = new SelectAdapter(selectListName,selectListType,getApplicationContext());
+        unSelectAdapter = new UnselectAdapter(unselectListName,unselectListType,getApplicationContext());
+        //适配器相关联
+        selectAdapter.setUnselectAdapter(unSelectAdapter);
+        unSelectAdapter.setSelectAdapter(selectAdapter);
+        selectRecycler.setAdapter(selectAdapter);
+        unSelectRecycler.setAdapter(unSelectAdapter);
+        //点击返回退出popupwindow
+        popupWindowBack = (ImageView) window.getContentView().findViewById(R.id.window_back);
+        popupWindowBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dismiss();
+            }
+        });
+        // 设置popWindow的点击背景变暗和消失时的监听事件
+        window.showAtLocation(toolbar, Gravity.BOTTOM,0,0);
+        myWindow = getWindow();
+        WindowManager.LayoutParams params = myWindow.getAttributes();
+        params.alpha = 0.5f;
+        myWindow.setAttributes(params);
+        window.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams params = myWindow.getAttributes();
+                params.alpha = 1.0f;
+                myWindow.setAttributes(params);
+            }
+        });
+    }
+
+    /**
+     * 用户关注的图片分类初始化
+     */
+    public void setCategory(){
+//      获取所有的图片类别，从1开始加载是因为1是首页要去掉
+        String[] categoryName = getResources().getStringArray(R.array.title_array_all);
+        String[] categoryType = getResources().getStringArray(R.array.type_array_all);
+        unselectListName = new ArrayList<>();
+        unselectListType = new ArrayList<>();
+        for (int i=1;i<categoryName.length;i++){
+           unselectListName.add(categoryName[i]);
+            unselectListType.add(categoryType[i]);
+
+        }
+//      添加数据库存在的用户已选择的日报
+        List<Category> list = DataSupport.findAll(Category.class);
+        selectListName = new ArrayList<>();
+        selectListType = new ArrayList<>();
+        for(int i=0;i<list.size();i++){
+            selectListName.add(list.get(i).getCategoryName());
+            selectListType.add(list.get(i).getGetCategoryType());
+        }
+//      去掉用户已经选择的图片分类
+        for(int i=0;i<unselectListName.size();i++){
+            for (String index:selectListName) {
+                if(unselectListName.get(i).equals(index)){
+                    unselectListName.remove(unselectListName.get(i));
+                    unselectListType.remove(unselectListType.get(i));
+                }
+
+            }
+        }
+
+
+
     }
 
     @Override

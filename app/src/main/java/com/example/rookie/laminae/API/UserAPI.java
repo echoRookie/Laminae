@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.API;
+package com.example.rookie.laminae.api;
 
 import com.example.rookie.laminae.entity.BoardListInfoBean;
 import com.example.rookie.laminae.login.UserBean;

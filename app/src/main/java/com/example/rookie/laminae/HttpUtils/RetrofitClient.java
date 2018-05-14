@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.httpUtils;
+package com.example.rookie.laminae.httputils;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 

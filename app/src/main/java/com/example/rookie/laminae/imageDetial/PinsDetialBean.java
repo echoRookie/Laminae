@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.imageDetial;
+package com.example.rookie.laminae.imagedetial;
 
 import com.example.rookie.laminae.login.UserBean;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;

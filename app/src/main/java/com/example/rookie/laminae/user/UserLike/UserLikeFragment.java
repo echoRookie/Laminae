@@ -6,26 +6,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.rookie.laminae.API.UserAPI;
+import com.example.rookie.laminae.api.UserAPI;
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
+import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
-
-import java.io.IOException;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 /**
  * Created by rookie on 2018/4/22.

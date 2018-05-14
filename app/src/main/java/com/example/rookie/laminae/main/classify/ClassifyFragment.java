@@ -11,10 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.example.rookie.laminae.API.TypeAPI;
+import com.example.rookie.laminae.api.TypeAPI;
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
+import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Constant;
 

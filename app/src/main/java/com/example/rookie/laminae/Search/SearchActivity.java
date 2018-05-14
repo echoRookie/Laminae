@@ -14,10 +14,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.rookie.laminae.API.SearchAPI;
+import com.example.rookie.laminae.api.SearchAPI;
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.searchResult.SearchResultActivity;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
+import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
 import com.google.android.flexbox.FlexboxLayout;

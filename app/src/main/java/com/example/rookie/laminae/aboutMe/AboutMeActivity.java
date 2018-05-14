@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.aboutMe;
+package com.example.rookie.laminae.aboutme;
 
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;

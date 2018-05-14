@@ -11,9 +11,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.rookie.laminae.API.TypeAPI;
+import com.example.rookie.laminae.api.TypeAPI;
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
+import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.main.home.ScrollListener;
 import com.example.rookie.laminae.user.UserLike.UserLikeAdapter;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;

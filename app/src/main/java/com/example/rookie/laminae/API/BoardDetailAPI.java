@@ -1,8 +1,7 @@
-package com.example.rookie.laminae.API;
+package com.example.rookie.laminae.api;
 
 import com.example.rookie.laminae.entity.BoardDetailBean;
 import com.example.rookie.laminae.entity.ListPinsBean;
-import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Constant;
 
 import io.reactivex.Observable;

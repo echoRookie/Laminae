@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.imageDetial;
+package com.example.rookie.laminae.imagedetial;
 
 import android.Manifest;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -27,13 +26,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.rookie.laminae.API.DownUpAPI;
-import com.example.rookie.laminae.API.ImageDetailAPI;
-import com.example.rookie.laminae.API.OperateAPI;
+import com.example.rookie.laminae.api.DownUpAPI;
+import com.example.rookie.laminae.api.ImageDetailAPI;
+import com.example.rookie.laminae.api.OperateAPI;
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.dialog.GatherPinsDialog;
 import com.example.rookie.laminae.entity.LikePinsOperateBean;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
+import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.main.home.ScrollListener;
 import com.example.rookie.laminae.user.UserLike.UserLikeAdapter;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;
@@ -44,7 +43,6 @@ import com.example.rookie.laminae.util.ImageLoadBuider;
 import com.example.rookie.laminae.util.SPUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;

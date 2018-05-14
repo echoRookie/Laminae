@@ -11,10 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.rookie.laminae.API.OperateAPI;
+import com.example.rookie.laminae.api.OperateAPI;
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.entity.UserBoardSingleBean;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
+import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.SPUtils;

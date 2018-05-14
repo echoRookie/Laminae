@@ -10,10 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.rookie.laminae.API.SearchAPI;
+import com.example.rookie.laminae.api.SearchAPI;
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.search.SearchBoardListBean;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
+import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
 

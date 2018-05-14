@@ -53,6 +53,7 @@ public class Constant {
 
     //删除画板的操作符
     public static final String OPERATEDELETEBOARD="DELETE";
-
+    //新闻接口地址
+    public static final String BASE_SERVER_URL = "http://is.snssdk.com/";
 
 }

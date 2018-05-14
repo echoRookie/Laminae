@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="560dp"
+    android:layout_marginTop="8dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+      >
+        <ImageView
+            android:id="@+id/window_back"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/collection_delete"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        >
+        <TextView
+            android:textSize="16dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:text="已添加分类"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:text="点击删除"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView" />
+
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:layout_marginTop="8dp"
+        android:id="@+id/select_recycler"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"></android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        >
+        <TextView
+            android:textSize="16dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:text="分类推荐"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <TextView
+            android:gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:text="点击添加"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:layout_marginTop="8dp"
+        android:id="@+id/unselect_recycler"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginBottom="24dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

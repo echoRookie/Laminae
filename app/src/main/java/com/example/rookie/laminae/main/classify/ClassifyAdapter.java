@@ -10,23 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.example.rookie.laminae.API.TypeAPI;
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
-import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
 
-import java.io.IOException;
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 /**
  * Created by rookie on 2018/4/26.

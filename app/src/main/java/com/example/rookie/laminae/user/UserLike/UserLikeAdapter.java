@@ -9,9 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.imageDetial.ImageDetialActivity;
+import com.example.rookie.laminae.imagedetial.ImageDetialActivity;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;

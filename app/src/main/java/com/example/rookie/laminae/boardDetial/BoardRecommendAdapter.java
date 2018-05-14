@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.boardDetial;
+package com.example.rookie.laminae.boarddetial;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.entity.PinsMainEntity;
-import com.example.rookie.laminae.imageDetial.ImageDetialActivity;
+import com.example.rookie.laminae.imagedetial.ImageDetialActivity;
 import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
 

@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.boardDetial;
+package com.example.rookie.laminae.boarddetial;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,13 +9,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.example.rookie.laminae.API.BoardDetailAPI;
+import com.example.rookie.laminae.api.BoardDetailAPI;
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.entity.ListPinsBean;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
-import com.example.rookie.laminae.user.UserLike.UserLikeAdapter;
-import com.example.rookie.laminae.user.UserPins.UserPinsAdapter;
-import com.example.rookie.laminae.user.UserPins.UserPinsBean;
+import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
 

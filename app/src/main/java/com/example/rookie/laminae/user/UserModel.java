@@ -2,9 +2,9 @@ package com.example.rookie.laminae.user;
 
 import android.util.Log;
 
-import com.example.rookie.laminae.API.UserAPI;
+import com.example.rookie.laminae.api.UserAPI;
 import com.example.rookie.laminae.base.CallBack;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
+import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.login.UserBean;
 import com.example.rookie.laminae.util.Base64;
 

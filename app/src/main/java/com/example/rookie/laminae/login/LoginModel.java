@@ -2,29 +2,20 @@ package com.example.rookie.laminae.login;
 
 import android.util.Log;
 
-import com.example.rookie.laminae.API.TokenAPI;
-import com.example.rookie.laminae.API.UserAPI;
-import com.example.rookie.laminae.base.BaseActivity;
+import com.example.rookie.laminae.api.TokenAPI;
+import com.example.rookie.laminae.api.UserAPI;
 import com.example.rookie.laminae.base.BaseApplication;
 import com.example.rookie.laminae.base.CallBack;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
+import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.SPUtils;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-import java.io.IOException;
-
-import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by rookie on 2018/4/11.

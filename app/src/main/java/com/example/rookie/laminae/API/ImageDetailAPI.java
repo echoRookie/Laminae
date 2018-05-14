@@ -1,13 +1,12 @@
-package com.example.rookie.laminae.API;
+package com.example.rookie.laminae.api;
 
-import com.example.rookie.laminae.imageDetial.PinsDetialBean;
+import com.example.rookie.laminae.imagedetial.PinsDetialBean;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Constant;
 
 import java.util.List;
 
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;

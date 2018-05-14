@@ -10,10 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.boardDetial.BoardDetialActivity;
-import com.example.rookie.laminae.entity.FollowBoardListBean;
+import com.example.rookie.laminae.boarddetial.BoardDetialActivity;
 import com.example.rookie.laminae.search.SearchBoardListBean;
-import com.example.rookie.laminae.searchResult.BoardResultAdapter;
 import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
 

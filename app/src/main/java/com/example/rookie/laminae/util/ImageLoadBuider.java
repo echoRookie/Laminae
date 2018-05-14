@@ -1,21 +1,9 @@
 package com.example.rookie.laminae.util;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.request.target.Target;
-import com.example.rookie.laminae.API.DownUpAPI;
-import com.example.rookie.laminae.R;
-import com.example.rookie.laminae.httpUtils.RetrofitClient;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by rookie on 2018/4/17.

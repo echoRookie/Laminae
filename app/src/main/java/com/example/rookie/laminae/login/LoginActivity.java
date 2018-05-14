@@ -15,12 +15,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.rookie.laminae.db.Category;
 import com.example.rookie.laminae.main.MainActivity;
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.base.BaseActivity;
 import com.example.rookie.laminae.user.UserInfoActivity;
 import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.SPUtils;
+import com.example.rookie.laminae.welcome.WelcomeActivity;
 
 public class LoginActivity extends BaseActivity implements LoginView {
     private LinearLayout linearLayout;
@@ -40,7 +42,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         dissmissWindowbar();
         setContentView(R.layout.activity_login);
         if((Boolean) SPUtils.get(getContext(),Constant.ISLOGIN,false)){
-            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this,WelcomeActivity.class);
             startActivity(intent);
             finish();
         }
@@ -78,9 +80,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(LoginActivity.this,UserInfoActivity.class);
-//                intent.putExtra(Constant.USERBEAN,userBean);
-//                startActivity(intent);
                 Intent intent = new Intent();
                 intent.setData(Uri.parse(getString(R.string.urlRegister)));
                 startActivity(intent);
@@ -106,6 +105,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
      */
     @Override
     public void navigateToHome() {
+        setCategoryInfo();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -174,6 +174,21 @@ public class LoginActivity extends BaseActivity implements LoginView {
         Looper.loop();
 
 
+
+    }
+
+    /**
+     *设置用户关注的分类
+     */
+    public void setCategoryInfo(){
+        String[] categoryName = getResources().getStringArray(R.array.title_array_all);
+        String[] categorryType = getResources().getStringArray(R.array.type_array_all);
+        for (int i =1;i<categoryName.length;i++){
+            Category category = new Category();
+            category.setCategoryName(categoryName[i]);
+            category.setGetCategoryType(categorryType[i]);
+            category.save();
+        }
 
     }
 }

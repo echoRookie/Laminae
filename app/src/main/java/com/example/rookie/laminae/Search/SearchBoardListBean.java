@@ -1,6 +1,6 @@
 package com.example.rookie.laminae.search;
 
-import com.example.rookie.laminae.imageDetial.PinsDetialBean;
+import com.example.rookie.laminae.imagedetial.PinsDetialBean;
 import com.example.rookie.laminae.user.UserBoard.UserBoardBean;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 

@@ -1,4 +1,4 @@
-package com.example.rookie.laminae.API;
+package com.example.rookie.laminae.api;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
