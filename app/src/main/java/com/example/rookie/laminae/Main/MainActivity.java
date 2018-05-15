@@ -43,6 +43,7 @@ import com.example.rookie.laminae.httputils.NewsRetrofitClient;
 import com.example.rookie.laminae.main.classify.SelectAdapter;
 import com.example.rookie.laminae.main.classify.UnselectAdapter;
 import com.example.rookie.laminae.main.news.NewsFragment;
+import com.example.rookie.laminae.main.video.VideoFragment;
 import com.example.rookie.laminae.search.SearchActivity;
 import com.example.rookie.laminae.login.LoginActivity;
 import com.example.rookie.laminae.main.classify.ClassifyFragment;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private ClassifyFragment classifyFragment;
     private HomeFragment homeFragment;
     private NewsFragment newsFragment;
+    private VideoFragment videoFragment;
     private ErrorFragment errorFragment;
     private Fragment myFragment;
     private FragmentManager fragmentManager;
@@ -152,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         classifyFragment = new ClassifyFragment();
         errorFragment = new ErrorFragment();
         newsFragment = new NewsFragment();
+        videoFragment = new VideoFragment();
 //        if(NetUtils.isConnected(getApplicationContext())){
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -202,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.main_home, "Home").setActiveColorResource(R.color.bottomBarHome))
                     .addItem(new BottomNavigationItem(R.drawable.main_classify, "Classify").setActiveColorResource(R.color.bottomBarClassify))
                     .addItem(new BottomNavigationItem(R.drawable.main_more, "More").setActiveColorResource(R.color.bottomBarMore))
+                    .addItem(new BottomNavigationItem(R.drawable.main_video,"Video"))
                     .setFirstSelectedPosition(0)
                     .initialise();
             bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
@@ -234,6 +238,17 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case 2:
                             switchFragment(newsFragment);
+                            toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarMore));
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                Window window = getWindow();
+                                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                                window.setStatusBarColor(getResources().getColor(R.color.bottomBarMoreDark));
+                            }
+                            break;
+                        case 3:
+                            switchFragment(videoFragment);
                             toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarMore));
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                 Window window = getWindow();

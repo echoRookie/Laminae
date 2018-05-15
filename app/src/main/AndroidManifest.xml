@@ -31,7 +31,10 @@
         <activity android:name=".boarddetial.BoardDetialActivity" />
         <activity android:name=".follow.UserFollowActivity" />
         <activity android:name=".aboutme.AboutMeActivity" />
-        <activity android:name=".main.news.NewsDetialActivity"></activity>
+        <activity android:name=".main.news.NewsDetialActivity" />
+        <activity android:name=".main.video.VideoDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

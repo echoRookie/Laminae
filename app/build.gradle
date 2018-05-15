@@ -47,5 +47,7 @@ dependencies {
     compile 'com.google.android:flexbox:0.3.2'
 //    SQLite
     compile 'org.litepal.android:core:1.4.1'
+//
+    compile 'cn.jzvd:jiaozivideoplayer:6.2.10'
     testCompile 'junit:junit:4.12'
 }
