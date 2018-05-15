@@ -24,6 +24,8 @@ import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.SPUtils;
 import com.example.rookie.laminae.welcome.WelcomeActivity;
 
+import org.litepal.crud.DataSupport;
+
 public class LoginActivity extends BaseActivity implements LoginView {
     private LinearLayout linearLayout;
     private AnimationDrawable background;
@@ -181,6 +183,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
      *设置用户关注的分类
      */
     public void setCategoryInfo(){
+        DataSupport.deleteAll(Category.class);
         String[] categoryName = getResources().getStringArray(R.array.title_array_all);
         String[] categorryType = getResources().getStringArray(R.array.type_array_all);
         for (int i =1;i<categoryName.length;i++){

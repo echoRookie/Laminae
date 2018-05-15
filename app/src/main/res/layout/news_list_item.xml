@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 <TextView
-    android:textSize="20dp"
+    android:textSize="16dp"
     android:layout_gravity="left"
     android:gravity="center_vertical"
     android:padding="8dp"

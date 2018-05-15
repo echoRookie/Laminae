@@ -1,6 +1,7 @@
 package com.example.rookie.laminae.main.news;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,11 +34,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.newsTitle.setText(list.get(position).title);
-        if(list.get(position).user_info.name!=null){
-            holder.newsUsername.setText(list.get(position).user_info.name);
-        }
+        holder.newsTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,NewsDetialActivity.class);
+                intent.putExtra("NEWSURL",list.get(position).article_url);
+                context.startActivity(intent);
+            }
+        });
+        holder.newsUsername.setText(list.get(position).media_name);
 
         holder.newsRecomment.setText(list.get(position).comment_count+"评论");
     }

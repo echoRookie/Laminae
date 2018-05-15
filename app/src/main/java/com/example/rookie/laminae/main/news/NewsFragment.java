@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class NewsFragment extends Fragment {
         tabLayout = (TabLayout) view.findViewById(R.id.news_tab);
         viewPager = (ViewPager)view.findViewById(R.id.news_viewPager);
         String [] newsCategory = getActivity().getResources().getStringArray(R.array.news_category);
-        for(int i=0;i<1;i++){
+        for(int i=0;i<newsCategory.length;i++){
            fragments.add(NewsListFragment.newInstance(newsCategory[i]));
         }
         myAdapter = new UserViewPagerAdapter(getFragmentManager(),fragments);

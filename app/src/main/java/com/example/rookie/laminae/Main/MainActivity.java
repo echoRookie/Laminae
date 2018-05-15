@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private List<String> selectListType;
     private List<String> unselectListName;
     private List<String> unselectListType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,24 +107,24 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.nav_logout){
+                if (item.getItemId() == R.id.nav_logout) {
                     drawerLayout.closeDrawers();
                     SPUtils.clear(getApplicationContext());
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 }
-                if(item.getItemId() == R.id.nav_search){
+                if (item.getItemId() == R.id.nav_search) {
                     drawerLayout.closeDrawers();
                     Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                     startActivity(intent);
                 }
-                if (item.getItemId() ==R.id.nav_follow){
+                if (item.getItemId() == R.id.nav_follow) {
                     drawerLayout.closeDrawers();
                     Intent intent = new Intent(MainActivity.this, UserFollowActivity.class);
                     startActivity(intent);
                 }
-                if (item.getItemId() == R.id.nav_about){
+                if (item.getItemId() == R.id.nav_about) {
                     drawerLayout.closeDrawers();
                     Intent intent = new Intent(MainActivity.this, AboutMeActivity.class);
                     startActivity(intent);
@@ -152,10 +153,10 @@ public class MainActivity extends AppCompatActivity {
         errorFragment = new ErrorFragment();
         newsFragment = new NewsFragment();
 //        if(NetUtils.isConnected(getApplicationContext())){
-            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         fragmentTransaction.add(R.id.main_content, homeFragment).commit();
-            myFragment =homeFragment ;
+        myFragment = homeFragment;
 //        }
 //        else {
 //
@@ -171,92 +172,92 @@ public class MainActivity extends AppCompatActivity {
      * username 用户名
      * usericon 用户头像
      */
-    public void init(){
+    public void init() {
         setCategory();
         View view = navigationView.getHeaderView(0);
         userIcon = (CircleImageView) view.findViewById(R.id.nav_header_image);
         username = (TextView) view.findViewById(R.id.nav_header_name);
 //      检查用户的登录状态
-        if(SPUtils.get(getApplicationContext(),Constant.ISLOGIN,false)!=null){
-            String usernameStatus = (String) SPUtils.get(getApplicationContext(),Constant.USERNAME,getString(R.string.userneme_status));
+        if (SPUtils.get(getApplicationContext(), Constant.ISLOGIN, false) != null) {
+            String usernameStatus = (String) SPUtils.get(getApplicationContext(), Constant.USERNAME, getString(R.string.userneme_status));
             username.setText(usernameStatus);
-            String userIconKey = (String) SPUtils.get(getApplicationContext(),Constant.USERICONKEY,"");
-            ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(),userIcon,userIconKey);
+            String userIconKey = (String) SPUtils.get(getApplicationContext(), Constant.USERICONKEY, "");
+            ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(), userIcon, userIconKey);
             userIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this,UserInfoActivity.class);
-                    int  userId = (int) SPUtils.get(getApplicationContext(),Constant.USERID,0);
-                    intent.putExtra(Constant.USERID,userId);
+                    Intent intent = new Intent(MainActivity.this, UserInfoActivity.class);
+                    int userId = (int) SPUtils.get(getApplicationContext(), Constant.USERID, 0);
+                    intent.putExtra(Constant.USERID, userId);
                     startActivity(intent);
                 }
             });
-            String userIconUrl = (String) SPUtils.get(getApplicationContext(),Constant.USERICONKEY,"");
-            ImageLoadBuider.ImageLoadfitCenter(this,userIcon,userIconUrl);
+            String userIconUrl = (String) SPUtils.get(getApplicationContext(), Constant.USERICONKEY, "");
+            ImageLoadBuider.ImageLoadfitCenter(this, userIcon, userIconUrl);
 //       底部导航栏的实现
             bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
             bottomNavigationBar.setBarBackgroundColor(R.color.colorPrimary);
             bottomNavigationBar.setMode(BottomNavigationBar.MODE_SHIFTING)
                     .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_RIPPLE);
-            bottomNavigationBar .addItem(new BottomNavigationItem(R.drawable.main_home,"Home").setActiveColorResource(R.color.bottomBarHome))
-                    .addItem(new BottomNavigationItem(R.drawable.main_classify,"Classify").setActiveColorResource(R.color.bottomBarClassify))
-                    .addItem(new BottomNavigationItem(R.drawable.main_more,"More").setActiveColorResource(R.color.bottomBarMore))
+            bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.main_home, "Home").setActiveColorResource(R.color.bottomBarHome))
+                    .addItem(new BottomNavigationItem(R.drawable.main_classify, "Classify").setActiveColorResource(R.color.bottomBarClassify))
+                    .addItem(new BottomNavigationItem(R.drawable.main_more, "More").setActiveColorResource(R.color.bottomBarMore))
                     .setFirstSelectedPosition(0)
                     .initialise();
             bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
 
-               @Override
-               public void onTabSelected(int position) {
+                @Override
+                public void onTabSelected(int position) {
 
-                   switch (position){
-                       case 0:
-                           switchFragment(homeFragment);
-                           toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarHome));
-                           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                               Window window = getWindow();
-                               window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                                       | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-                               window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                               window.setStatusBarColor(getResources().getColor(R.color.bottomBarHomeDark));
-                           }
-                           break;
-                       case 1:
-                           switchFragment(classifyFragment);
-                           toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarClassify));
-                           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                               Window window = getWindow();
-                               window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                                       | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-                               window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                               window.setStatusBarColor(getResources().getColor(R.color.bottomBarClassifyDark));
-                           }
-                           break;
-                       case 2:
-                           switchFragment(newsFragment);
-                           toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarMore));
-                           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                               Window window = getWindow();
-                               window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                                       | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-                               window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                               window.setStatusBarColor(getResources().getColor(R.color.bottomBarMoreDark));
-                           }
-                           break;
+                    switch (position) {
+                        case 0:
+                            switchFragment(homeFragment);
+                            toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarHome));
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                Window window = getWindow();
+                                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                                window.setStatusBarColor(getResources().getColor(R.color.bottomBarHomeDark));
+                            }
+                            break;
+                        case 1:
+                            switchFragment(classifyFragment);
+                            toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarClassify));
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                Window window = getWindow();
+                                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                                window.setStatusBarColor(getResources().getColor(R.color.bottomBarClassifyDark));
+                            }
+                            break;
+                        case 2:
+                            switchFragment(newsFragment);
+                            toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarMore));
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                Window window = getWindow();
+                                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                                window.setStatusBarColor(getResources().getColor(R.color.bottomBarMoreDark));
+                            }
+                            break;
 
-                   }
+                    }
 
-               }
+                }
 
-               @Override
-               public void onTabUnselected(int position) {
+                @Override
+                public void onTabUnselected(int position) {
 
-               }
+                }
 
-               @Override
-               public void onTabReselected(int position) {
+                @Override
+                public void onTabReselected(int position) {
 
-               }
-           });
+                }
+            });
 //            RetrofitClient client = RetrofitClient.getInstance();
 //            ImageDetailAPI imageDetailAPI = client.createService(ImageDetailAPI.class);
 //            Observable<ResponseBody> observable = imageDetailAPI.httpsPinsDetailRx(Base64.mClientInto,"1619723899");
@@ -293,10 +294,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-//    替换fragment的方法
+
+    //    替换fragment的方法
     private void switchFragment(Fragment fragment) {
         //判断当前显示的Fragment是不是切换的Fragment
-        if (myFragment != fragment ) {
+        if (myFragment != fragment) {
             //判断切换的Fragment是否已经添加过
             if (!fragment.isAdded()) {
                 //如果没有，则先把当前的Fragment隐藏，把切换的Fragment添加上
@@ -309,6 +311,7 @@ public class MainActivity extends AppCompatActivity {
             myFragment = fragment;
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -317,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -338,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.category_edit:
                 showPopWindow();
         }
@@ -347,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showPopWindow() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-         View view = inflater.inflate(R.layout.popup_window, null);
+        View view = inflater.inflate(R.layout.popup_window, null);
 
 
         // 下面是两种方法得到宽度和高度
@@ -367,12 +370,12 @@ public class MainActivity extends AppCompatActivity {
 //        //popupWindow 内部控件的初始化
         selectRecycler = (RecyclerView) window.getContentView().findViewById(R.id.select_recycler);
         unSelectRecycler = (RecyclerView) window.getContentView().findViewById(R.id.unselect_recycler);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3);
-        GridLayoutManager gridLayoutManagerOne = new GridLayoutManager(getApplicationContext(),3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
+        GridLayoutManager gridLayoutManagerOne = new GridLayoutManager(getApplicationContext(), 3);
         selectRecycler.setLayoutManager(gridLayoutManager);
         unSelectRecycler.setLayoutManager(gridLayoutManagerOne);
-        selectAdapter = new SelectAdapter(selectListName,selectListType,getApplicationContext());
-        unSelectAdapter = new UnselectAdapter(unselectListName,unselectListType,getApplicationContext());
+        selectAdapter = new SelectAdapter(selectListName, selectListType, getApplicationContext());
+        unSelectAdapter = new UnselectAdapter(unselectListName, unselectListType, getApplicationContext());
         //适配器相关联
         selectAdapter.setUnselectAdapter(unSelectAdapter);
         unSelectAdapter.setSelectAdapter(selectAdapter);
@@ -387,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // 设置popWindow的点击背景变暗和消失时的监听事件
-        window.showAtLocation(toolbar, Gravity.BOTTOM,0,0);
+        window.showAtLocation(toolbar, Gravity.BOTTOM, 0, 0);
         myWindow = getWindow();
         WindowManager.LayoutParams params = myWindow.getAttributes();
         params.alpha = 0.5f;
@@ -405,36 +408,41 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 用户关注的图片分类初始化
      */
-    public void setCategory(){
+    public void setCategory() {
 //      获取所有的图片类别，从1开始加载是因为1是首页要去掉
         String[] categoryName = getResources().getStringArray(R.array.title_array_all);
         String[] categoryType = getResources().getStringArray(R.array.type_array_all);
         unselectListName = new ArrayList<>();
         unselectListType = new ArrayList<>();
-        for (int i=1;i<categoryName.length;i++){
-           unselectListName.add(categoryName[i]);
+        for (int i = 1; i < categoryName.length; i++) {
+            unselectListName.add(categoryName[i]);
             unselectListType.add(categoryType[i]);
 
         }
+        Log.d("unname", "setCategory: " + unselectListName.size());
+        Log.d("untype", "setCategory: " + unselectListName.size());
+
 //      添加数据库存在的用户已选择的日报
         List<Category> list = DataSupport.findAll(Category.class);
         selectListName = new ArrayList<>();
         selectListType = new ArrayList<>();
-        for(int i=0;i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
             selectListName.add(list.get(i).getCategoryName());
+            Log.d("uncatename", "setCategory: " + list.get(i).getCategoryName());
             selectListType.add(list.get(i).getGetCategoryType());
         }
-//      去掉用户已经选择的图片分类
-        for(int i=0;i<unselectListName.size();i++){
-            for (String index:selectListName) {
-                if(unselectListName.get(i).equals(index)){
+        Log.d("unsename", "setCategory: " + selectListName.size());
+        Log.d("unsetype", "setCategory: " + selectListName.size());
+////      去掉用户已经选择的图片分类
+        for (int i = 0; i < unselectListName.size(); i++) {
+            for (String index : selectListName) {
+                if (unselectListName.get(i).equals(index)) {
                     unselectListName.remove(unselectListName.get(i));
                     unselectListType.remove(unselectListType.get(i));
                 }
 
             }
         }
-
 
 
     }

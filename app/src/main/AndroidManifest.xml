@@ -30,7 +30,8 @@
         <activity android:name=".searchResult.SearchResultActivity" />
         <activity android:name=".boarddetial.BoardDetialActivity" />
         <activity android:name=".follow.UserFollowActivity" />
-        <activity android:name=".aboutme.AboutMeActivity"></activity>
+        <activity android:name=".aboutme.AboutMeActivity" />
+        <activity android:name=".main.news.NewsDetialActivity"></activity>
     </application>
 
 </manifest>
