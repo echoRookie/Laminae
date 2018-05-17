@@ -30,10 +30,12 @@ import com.example.rookie.laminae.api.DownUpAPI;
 import com.example.rookie.laminae.api.ImageDetailAPI;
 import com.example.rookie.laminae.api.OperateAPI;
 import com.example.rookie.laminae.R;
+import com.example.rookie.laminae.boarddetial.BoardDetialActivity;
 import com.example.rookie.laminae.dialog.GatherPinsDialog;
 import com.example.rookie.laminae.entity.LikePinsOperateBean;
 import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.main.home.ScrollListener;
+import com.example.rookie.laminae.user.UserInfoActivity;
 import com.example.rookie.laminae.user.UserLike.UserLikeAdapter;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Base64;
@@ -65,6 +67,7 @@ public class ImageDetialActivity extends AppCompatActivity {
     private TextView link;
     private TextView pins;//采集数量
     private TextView like;//喜欢数量
+    private String imgUrl;//分享地址
 
     public int getPinsId() {
         return pinsId;
@@ -81,7 +84,6 @@ public class ImageDetialActivity extends AppCompatActivity {
     public void setPinsDescription(String pinsDescription) {
         this.pinsDescription = pinsDescription;
     }
-
     private CircleImageView userIcon;
     private TextView username;
     private ImageView boardCoverOne;
@@ -94,11 +96,14 @@ public class ImageDetialActivity extends AppCompatActivity {
     private UserLikeAdapter myAdapter;
     private GridLayoutManager gridLayoutManager;
     private List<UserPinsBean.UserPinsItem> recommendPins;
-    private NestedScrollView nestedScrollView;
     private Toolbar toolbar;
     private boolean is_like;
     private String pinsDescription;
     private FloatingActionButton pinsButton;//采集按钮
+    private int userId;//图片所属用户id
+    private int boardId;//图片所属画板id
+    private String boardDescription;//图片所属画板描述
+    private String boardText;//图片所属画板的标题
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,7 +142,13 @@ public class ImageDetialActivity extends AppCompatActivity {
                 showDialog();
             }
         });
+//        设置toolbar
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        if (getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
         setInfo(pinsId);
         getPinsRecommendFirst();
         recyclerView.addOnScrollListener(new ScrollListener((GridLayoutManager) recyclerView.getLayoutManager()) {
@@ -147,17 +158,12 @@ public class ImageDetialActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
     }
 
     /**
      * 根据网络请求结果设置界面信息
      */
-    public void setInfo(int id){
+    public void setInfo(final int id){
         RetrofitClient client = RetrofitClient.getInstance();
         ImageDetailAPI imageDetialAPI = client.createService(ImageDetailAPI.class);
         Observable<PinsDetialBean> observable = imageDetialAPI.httpsPinsDetailRx((String) SPUtils.get(this,Constant.USERAUthorization,Base64.mClientInto),String.valueOf(id));
@@ -171,6 +177,11 @@ public class ImageDetialActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(PinsDetialBean value) {
+                        imgUrl = "http://img.hb.aicdn.com/" + value.getPin().getFile().getKey();
+                        userId = value.getPin().getUser_id();
+                        boardId = value.getPin().getBoard().getBoard_id();
+                        boardDescription = value.getPin().getBoard().getDescription();
+                        boardText = value.getPin().getBoard().getTitle();
                         pinsKey = value.getPin().getFile().getKey();
                         pinsDetialBean = value;
                         pinsDescription = value.getPin().getRaw_text();
@@ -191,6 +202,25 @@ public class ImageDetialActivity extends AppCompatActivity {
                         is_like = value.getPin().isLiked();
                         Log.d("imagedddd", "onNext: "+is_like);
                         boardTitle.setText(value.getPin().getBoard().getTitle());
+//                      设置用户和画板的点击跳转事件
+                        userIcon.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(ImageDetialActivity.this, UserInfoActivity.class);
+                                intent.putExtra(Constant.USERID,userId);
+                                startActivity(intent);
+                            }
+                        });
+                        boardTitle.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(ImageDetialActivity.this, BoardDetialActivity.class);
+                                intent.putExtra(Constant.BOARDID,boardId);
+                                intent.putExtra(Constant.BOARDDESCRIPTION,boardDescription);
+                                intent.putExtra(Constant.BOARDTITLE,boardText);
+                                startActivity(intent);
+                            }
+                        });
 
 
                     }
@@ -324,6 +354,19 @@ public class ImageDetialActivity extends AppCompatActivity {
 
                         Uri.fromFile(new File(FileUtils.getDirsFile().getPath()))));
                 break;
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.action_share:
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT,"分享图片");
+                intent.putExtra(Intent.EXTRA_TEXT,imgUrl);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(Intent.createChooser(intent, "分享图片"));
+                break;
+
+
 
 
 

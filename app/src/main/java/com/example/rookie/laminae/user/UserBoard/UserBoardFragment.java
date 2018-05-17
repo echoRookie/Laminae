@@ -28,7 +28,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class UserBoardFragment extends Fragment {
-    private static final String USERID = Constant.USERID;
+    private String userId;
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView recyclerView;
 
@@ -36,7 +36,7 @@ public class UserBoardFragment extends Fragment {
     public static UserBoardFragment newInstance(String userId) {
         UserBoardFragment userBoardFragment = new UserBoardFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(USERID, userId);
+        bundle.putString(Constant.USERID, userId);
         userBoardFragment.setArguments(bundle);
         return userBoardFragment;
     }
@@ -51,6 +51,8 @@ public class UserBoardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_fragment_baseview, container, false);
+        Bundle bundle = getArguments();
+        userId = bundle.getString(Constant.USERID);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         getBoardInfoFirst();
@@ -63,7 +65,7 @@ public class UserBoardFragment extends Fragment {
     public void getBoardInfoFirst() {
         RetrofitClient client = RetrofitClient.getInstance();
         UserAPI userAPi = client.createService(UserAPI.class);
-        Observable<UserBoardBean> observable = userAPi.httpsUserBoardRx(Base64.mClientInto, "22282493", 20);
+        Observable<UserBoardBean> observable = userAPi.httpsUserBoardRx(Base64.mClientInto, userId, 20);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<UserBoardBean>() {

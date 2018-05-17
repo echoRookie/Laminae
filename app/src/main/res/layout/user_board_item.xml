@@ -31,6 +31,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:textColor="@android:color/white"
                     android:id="@+id/user_board_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -38,6 +39,7 @@
                     tools:text="哈哈哈哈" />
 
                 <TextView
+                    android:textColor="@android:color/white"
                     android:id="@+id/user_board_follow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

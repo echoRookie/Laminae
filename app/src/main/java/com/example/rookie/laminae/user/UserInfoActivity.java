@@ -24,6 +24,7 @@ import com.example.rookie.laminae.user.UserLike.UserLikeFragment;
 import com.example.rookie.laminae.user.UserPins.UserPinsFragment;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
+import com.example.rookie.laminae.util.ImageLoadBuider;
 import com.example.rookie.laminae.util.SPUtils;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
     private Toolbar toolbar;
-    private int userId;
+    private int userId;//用户id
     private ImageView haederBackground;
     private CircleImageView userIcon;
     private TextView userFollowers;
@@ -95,10 +96,11 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
     public void setUserInfo(UserBean info) {
         this.userBean = info;
         String url = getString(R.string.url_image);
-        Glide.with(getApplication())
-                .load(url+userBean.getIcon_info().getKey())
-                .crossFade(1000)
-                .into(userIcon);
+        ImageLoadBuider.ImageLoadFromParams(getApplication(),userIcon,userBean.getIcon_info().getKey());
+//        Glide.with(getApplication())
+//                .load(url+)
+//                .crossFade(1000)
+//                .into(userIcon);
 
         Glide.with(getApplication())
                 .load(url+userBean.getIcon_info().getKey())

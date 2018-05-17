@@ -48,6 +48,7 @@ import com.example.rookie.laminae.search.SearchActivity;
 import com.example.rookie.laminae.login.LoginActivity;
 import com.example.rookie.laminae.main.classify.ClassifyFragment;
 import com.example.rookie.laminae.main.home.HomeFragment;
+import com.example.rookie.laminae.setting.MyPreferenceActivity;
 import com.example.rookie.laminae.user.UserInfoActivity;
 import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
@@ -131,6 +132,11 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, AboutMeActivity.class);
                     startActivity(intent);
                 }
+                if(item.getItemId() ==R.id.nav_setting){
+                    drawerLayout.closeDrawers();
+                    Intent intent = new Intent(MainActivity.this, MyPreferenceActivity.class);
+                    startActivity(intent);
+                }
                 return true;
             }
         });
@@ -151,10 +157,10 @@ public class MainActivity extends AppCompatActivity {
         init();
 //      进入首页用fragment替换主布局
         homeFragment = new HomeFragment();
-        classifyFragment = new ClassifyFragment();
-        errorFragment = new ErrorFragment();
-        newsFragment = new NewsFragment();
-        videoFragment = new VideoFragment();
+//        classifyFragment = new ClassifyFragment();
+//        errorFragment = new ErrorFragment();
+//        newsFragment = new NewsFragment();
+//        videoFragment = new VideoFragment();
 //        if(NetUtils.isConnected(getApplicationContext())){
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -226,6 +232,9 @@ public class MainActivity extends AppCompatActivity {
                             }
                             break;
                         case 1:
+                            if (classifyFragment == null){
+                                classifyFragment = new ClassifyFragment();
+                            }
                             switchFragment(classifyFragment);
                             toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarClassify));
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -237,6 +246,9 @@ public class MainActivity extends AppCompatActivity {
                             }
                             break;
                         case 2:
+                            if (newsFragment == null){
+                                newsFragment = new NewsFragment();
+                            }
                             switchFragment(newsFragment);
                             toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarMore));
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -248,6 +260,9 @@ public class MainActivity extends AppCompatActivity {
                             }
                             break;
                         case 3:
+                            if(videoFragment == null){
+                                videoFragment =new VideoFragment();
+                            }
                             switchFragment(videoFragment);
                             toolbar.setBackgroundColor(getResources().getColor(R.color.bottomBarMore));
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -273,38 +288,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-//            RetrofitClient client = RetrofitClient.getInstance();
-//            ImageDetailAPI imageDetailAPI = client.createService(ImageDetailAPI.class);
-//            Observable<ResponseBody> observable = imageDetailAPI.httpsPinsDetailRx(Base64.mClientInto,"1619723899");
-//            observable.subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new Observer<ResponseBody>() {
-//                        @Override
-//                        public void onSubscribe(Disposable d) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onNext(ResponseBody value) {
-//                            try {
-//                                Log.d("claass", "onNext: "+value.string());
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable e) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onComplete() {
-//
-//                        }
-//                    });
-
 
         }
 

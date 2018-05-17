@@ -1,6 +1,7 @@
 package com.example.rookie.laminae.searchResult;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.search.SearchPeopleListBean;
+import com.example.rookie.laminae.user.UserInfoActivity;
+import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
 
 import java.util.List;
@@ -35,9 +38,18 @@ public class UserResultAdapter extends RecyclerView.Adapter<UserResultAdapter.My
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        SearchPeopleListBean.UsersBean usersBean = myUsers.get(position);
+        final SearchPeopleListBean.UsersBean usersBean = myUsers.get(position);
         ImageLoadBuider.ImageLoadFromParamsGeneral(getMyContext(),holder.userIcon,usersBean.getAvatar().getKey());
         holder.username.setText(usersBean.getUsername());
+        holder.userIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(myContext, UserInfoActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(Constant.USERID,usersBean.getUser_id());
+                myContext.startActivity(intent);
+            }
+        });
         holder.followCount.setText(String.valueOf(usersBean.getFollower_count()));
 
     }

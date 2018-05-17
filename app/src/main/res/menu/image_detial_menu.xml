@@ -15,5 +15,9 @@
         android:id="@+id/action_gather"
         android:title="采集"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_share"
+        android:title="分享"
+        app:showAsAction="never" />
 
 </menu>

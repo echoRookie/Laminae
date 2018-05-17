@@ -50,13 +50,13 @@ public class GatherPinsDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        setBoardTitleInfo();
         View view = layoutInflater.inflate(R.layout.dialog_gather_pins,null);
         editText = (EditText) view.findViewById(R.id.edit_describe);
         spinner = (Spinner) view.findViewById(R.id.spinner_title);
         editDescription = ((ImageDetialActivity) getActivity()).getPinsDescription();
         editText.setText(editDescription);
         pinsId = ((ImageDetialActivity)getActivity()).getPinsId();
+        setBoardTitleInfo();
         builder.setTitle("采集")
                 .setView(view)
                 .setPositiveButton("确定采集", new DialogInterface.OnClickListener() {
@@ -70,6 +70,10 @@ public class GatherPinsDialog extends AppCompatDialogFragment {
                 .setNegativeButton("取消",null);
                 return  builder.create();
     }
+
+    /**
+     * 查找所用的画板名字
+     */
     public void setBoardTitleInfo(){
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
         UserAPI userAPI = retrofitClient.createService(UserAPI.class);
@@ -85,13 +89,13 @@ public class GatherPinsDialog extends AppCompatDialogFragment {
 
                     @Override
                     public void onNext(BoardListInfoBean value) {
-                        Log.d("GatherPins", "onNext: "+value.getBoards().size());
+                        boartTitle = new ArrayList<String>();
+                        boardId = new ArrayList<Integer>();
                         for (int i = 0;i<value.getBoards().size();i++){
-                            boartTitle = new ArrayList<String>();
-                            boardId = new ArrayList<Integer>();
                             boartTitle.add(value.getBoards().get(i).getTitle());
                             boardId.add(value.getBoards().get(i).getBoard_id());
                         }
+                        Log.d("Gather", "onNext: "+boartTitle.size());
                         myAdapter = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_dropdown_item,boartTitle);
                         spinner.setAdapter(myAdapter);
                     }
@@ -107,6 +111,13 @@ public class GatherPinsDialog extends AppCompatDialogFragment {
                     }
                 });
     }
+
+    /**
+     * 用户对图片进行采集操作
+     * @param boardId
+     * @param text
+     * @param pinsId
+     */
     public void userOperatePins(String boardId,String text,String pinsId){
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
         OperateAPI operateAPI = retrofitClient.createService(OperateAPI.class);

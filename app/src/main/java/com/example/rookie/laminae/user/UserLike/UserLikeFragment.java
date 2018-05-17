@@ -28,14 +28,14 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class UserLikeFragment extends Fragment {
-    private static final String USERID = Constant.USERID;
+    private String userId;
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView recyclerView;
     private UserLikeAdapter myAdapter;
     public static  UserLikeFragment newINstance(String userId){
         UserLikeFragment userLikeFragment = new UserLikeFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(USERID,userId);
+        bundle.putString(Constant.USERID,userId);
         userLikeFragment.setArguments(bundle);
         return  userLikeFragment;
 
@@ -45,6 +45,8 @@ public class UserLikeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_fragment_baseview, container, false);
+        Bundle bundle = getArguments();
+        userId = bundle.getString(Constant.USERID);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         getLikesFirst();
@@ -52,7 +54,7 @@ public class UserLikeFragment extends Fragment {
     }
     public void getLikesFirst(){
         RetrofitClient client = RetrofitClient.getInstance();
-        Observable<UserPinsBean> observable = client.createService(UserAPI.class).httpsUserLikePinsRx(Base64.mClientInto,"22282493",20);
+        Observable<UserPinsBean> observable = client.createService(UserAPI.class).httpsUserLikePinsRx(Base64.mClientInto,userId,20);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<UserPinsBean>() {

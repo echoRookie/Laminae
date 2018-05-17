@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
+<android.support.design.widget.CoordinatorLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -28,7 +29,7 @@
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed"/>
 
             <android.support.v7.widget.Toolbar
-                android:layout_margin="16dp"
+                android:layout_marginTop="24dp"
                 android:layout_height="120dp"
                 android:id="@+id/user_toolbar"
                 android:layout_width="match_parent"
@@ -36,7 +37,6 @@
                 app:layout_collapseMode="pin"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>

@@ -73,6 +73,7 @@ public class ImageLoadBuider {
         Glide.with(context)
                 .load(url+string)
                 .centerCrop()
+                .bitmapTransform()
                 .crossFade(1000)
                 .into(view);
 

@@ -28,7 +28,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class UserPinsFragment extends Fragment {
-    private static final String USERID = Constant.USERID;
+    public String userId;
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView recyclerView;
     private UserPinsAdapter myAdapter;
@@ -37,7 +37,7 @@ public class UserPinsFragment extends Fragment {
     public static UserPinsFragment newInstance(String userId) {
         UserPinsFragment userPinsFragment = new UserPinsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(USERID, userId);
+        bundle.putString(Constant.USERID, userId);
         userPinsFragment.setArguments(bundle);
         return userPinsFragment;
     }
@@ -46,14 +46,20 @@ public class UserPinsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_fragment_baseview,container,false);
+        Bundle bundle = getArguments();
+        userId = bundle.getString(Constant.USERID);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         getPinsFirst();
         return  view;
     }
+
+    /**
+     * 第一次加载用户采集图片
+     */
     public void getPinsFirst(){
         RetrofitClient client = RetrofitClient.getInstance();
-        Observable<UserPinsBean> observable = client.createService(UserAPI.class).httpsUserPinsRx(Base64.mClientInto,"22282493",20);
+        Observable<UserPinsBean> observable = client.createService(UserAPI.class).httpsUserPinsRx(Base64.mClientInto,userId,20);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<UserPinsBean>() {

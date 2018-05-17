@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.entity.Daily;
+import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
 
 import java.util.List;
@@ -41,23 +42,33 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Daily.IssueList.ItemList itemList = myList.get(position+1);
+        final Daily.IssueList.ItemList itemList;
+        itemList = myList.get(position);
         Glide.with(context)
                 .load(itemList.data.cover.feed)
                 .centerCrop()
                 .crossFade(1000)
                 .into(holder.videoCover);
-        Glide.with(context)
-                .load(itemList.data.author.icon)
-                .centerCrop()
-                .crossFade(1000)
-                .into(holder.videoUserIcon);
+        if (itemList.data.author != null){
+            Glide.with(context)
+                    .load(itemList.data.author.icon)
+                    .centerCrop()
+                    .crossFade(1000)
+                    .into(holder.videoUserIcon);
+            holder.videoUserName.setText(itemList.data.author.name);
+        }
+
         holder.videoTitle.setText(itemList.data.title);
-        holder.videoUserName.setText(itemList.data.author.name);
+
         holder.videoCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context,VideoDetailActivity.class));
+                Intent intent = new Intent(context,VideoDetailActivity.class);
+                intent.putExtra(Constant.PLAYURL,itemList.data.playUrl);
+                intent.putExtra(Constant.VIDEODESCRIPTION,itemList.data.description);
+                intent.putExtra(Constant.VIDEOBLUR,itemList.data.cover.blurred);
+                intent.putExtra(Constant.VIDEODURATION,itemList.data.duration);
+                context.startActivity(intent);
             }
         });
 
@@ -66,7 +77,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return myList.size()-1;
+        return myList.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

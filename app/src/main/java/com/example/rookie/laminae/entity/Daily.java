@@ -1,13 +1,16 @@
 package com.example.rookie.laminae.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
  * Created by rookie on 2018/5/15.
  */
 public class Daily {
-    public String nextPageUrl;
     public List<IssueList> issueList;
+    public String nextPageUrl;
 
     public static class IssueList {
         public long releaseTime;
@@ -15,8 +18,8 @@ public class Daily {
         public long date;
         public long publishTime;
         public int count;
-        public List<ItemList> itemList;
-        public class ItemList{
+        public List<ItemList> itemList ;
+        public class ItemList {
             public String type;
             public Data data;
             public class Data{

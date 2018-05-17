@@ -1,6 +1,7 @@
 package com.example.rookie.laminae.user.UserBoard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +12,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.rookie.laminae.R;
+import com.example.rookie.laminae.boarddetial.BoardDetialActivity;
 import com.example.rookie.laminae.dialog.BoardEditDialog;
+import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
 
 import java.util.List;
@@ -42,10 +45,20 @@ public class UserBoardAdapter extends RecyclerView.Adapter<UserBoardAdapter.MyVi
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        UserBoardBean.BoardItemInfo boardInfo = myBoards.get(position);
+        final UserBoardBean.BoardItemInfo boardInfo = myBoards.get(position);
         if(boardInfo.getPins().size()>0){
             ImageLoadBuider.ImageLoadFromParamsGeneral(myContext,holder.boardCover,boardInfo.getPins().get(0).getFile().getKey());
         }
+        holder.boardCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(myContext, BoardDetialActivity.class);
+                intent.putExtra(Constant.BOARDID,boardInfo.getBoard_id());
+                intent.putExtra(Constant.BOARDTITLE,boardInfo.getTitle());
+                intent.putExtra(Constant.BOARDDESCRIPTION,boardInfo.getDescription());
+                myContext.startActivity(intent);
+            }
+        });
 
         boardId = String.valueOf(boardInfo.getBoard_id());
         boardTitle = boardInfo.getTitle();

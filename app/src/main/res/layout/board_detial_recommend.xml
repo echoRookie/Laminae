@@ -44,10 +44,11 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
             android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_width="match_parent"
             android:layout_height="50sp">
             <TextView
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
                 android:id="@+id/board_detial_recommend_follow"
                 android:textSize="12dp"

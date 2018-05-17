@@ -3,24 +3,40 @@ package com.example.rookie.laminae.main.video;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.rookie.laminae.R;
+import com.example.rookie.laminae.util.Constant;
 
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 
 
 public class VideoDetailActivity extends AppCompatActivity {
+    private String pageUrl;//下一页加载的网址
+    private String videoDescription;//描述
+    private String videoBlur;//背景模糊图
+    private TextView description;
+    private ImageView blur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.video_detail);
+        pageUrl = getIntent().getStringExtra(Constant.PLAYURL);
+        videoDescription = getIntent().getStringExtra(Constant.VIDEODESCRIPTION);
+        videoBlur = getIntent().getStringExtra(Constant.VIDEOBLUR);
+        description = (TextView) findViewById(R.id.video_description);
+        blur = (ImageView) findViewById(R.id.video_background) ;
+        description.setText(videoDescription);
+        Glide.with(this)
+                .load(videoBlur)
+                .centerCrop()
+                .into(blur);
         JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
-        jzVideoPlayerStandard.setUp("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4"
-                , JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "饺子闭眼睛");
-        Glide.with(this).load("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640").into(jzVideoPlayerStandard.thumbImageView);
+        jzVideoPlayerStandard.setUp(pageUrl, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "");
 
     }
     @Override

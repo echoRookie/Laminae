@@ -1,6 +1,7 @@
 package com.example.rookie.laminae.user.UserPins;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.rookie.laminae.R;
+import com.example.rookie.laminae.imagedetial.ImageDetialActivity;
+import com.example.rookie.laminae.util.Constant;
 import com.example.rookie.laminae.util.ImageLoadBuider;
 
 import java.util.List;
@@ -43,9 +46,18 @@ public class UserPinsAdapter extends RecyclerView.Adapter<UserPinsAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        UserPinsBean.UserPinsItem  pinsInfo = myPins.get(position);
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        final UserPinsBean.UserPinsItem  pinsInfo = myPins.get(position);
         ImageLoadBuider.ImageLoadFromParamsGeneral(myContext,holder.pinsCover,pinsInfo.getFile().getKey());
+        holder.pinsCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(myContext, ImageDetialActivity.class);
+                intent.putExtra(Constant.PINSID,pinsInfo.getPin_id());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                myContext.startActivity(intent);
+            }
+        });
         holder.pinsText.setText(pinsInfo.getRaw_text());
         if (pinsInfo.getBoard().getTitle()!=null){
         holder.pinsBoard.setText("来自 "+pinsInfo.getBoard().getTitle());}

@@ -55,5 +55,9 @@ public class Constant {
     public static final String OPERATEDELETEBOARD="DELETE";
     //新闻接口地址
     public static final String BASE_SERVER_URL = "http://is.snssdk.com/";
-
+    //视频播放地址
+    public static final String PLAYURL = "playURl";
+    public static final String VIDEODESCRIPTION = "description";
+    public static final String VIDEOBLUR = "blur";
+    public static final String VIDEODURATION = "duration";
 }

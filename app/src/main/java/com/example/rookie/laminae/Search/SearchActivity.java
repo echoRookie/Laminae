@@ -3,6 +3,7 @@ package com.example.rookie.laminae.search;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -16,12 +17,15 @@ import android.widget.Toast;
 
 import com.example.rookie.laminae.api.SearchAPI;
 import com.example.rookie.laminae.R;
+import com.example.rookie.laminae.db.SearchHistory;
 import com.example.rookie.laminae.searchResult.SearchResultActivity;
 import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
 import com.google.android.flexbox.FlexboxLayout;
 import com.jakewharton.rxbinding2.widget.RxTextView;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,25 +40,26 @@ import io.reactivex.schedulers.Schedulers;
 public class SearchActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private SearchView searchView;
-    private FlexboxLayout flexboxLayout;
+    private FlexboxLayout flexboxLayout;//用来放置搜索记录控件
     private ListView hintListView;
-    private List<String> hintList;
+    private List<String> hintList;//搜索提示
+    private List<SearchHistory> historyList;//搜索历史
     private ArrayAdapter<String> myAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         toolbar = (Toolbar) findViewById(R.id.search_toolbar);
         toolbar.setTitle("搜索");
         setSupportActionBar(toolbar);
-        if(getSupportActionBar()!=null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        hintListView = (ListView) findViewById(R.id.hint_list) ;
+        hintListView = (ListView) findViewById(R.id.hint_list);
         hintList = new ArrayList<>();
-        myAdapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,hintList);
+        myAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, hintList);
         hintListView.setAdapter(myAdapter);
         searchView = (SearchView) toolbar.findViewById(R.id.searchview);
         searchView.setSubmitButtonEnabled(true);
@@ -66,7 +71,7 @@ public class SearchActivity extends AppCompatActivity {
         });
         SearchView.SearchAutoComplete searchText = (SearchView.SearchAutoComplete) searchView.findViewById(R.id.search_src_text);
         RxTextView.textChanges(searchText)
-                .debounce(1,TimeUnit.SECONDS)
+                .debounce(1, TimeUnit.SECONDS)
                 .skip(1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -78,7 +83,7 @@ public class SearchActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(CharSequence value) {
-                          getHintHttp(value.toString());
+                        getHintHttp(value.toString());
                     }
 
                     @Override
@@ -95,9 +100,13 @@ public class SearchActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+//                保存搜索记录
+                SearchHistory searchHistory = new SearchHistory();
+                searchHistory.setCode(query);
+                searchHistory.save();
                 Toast.makeText(getApplicationContext(), "提交" + query, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
-                intent.putExtra(Constant.SEARCHKEY,query);
+                intent.putExtra(Constant.SEARCHKEY, query);
                 startActivity(intent);
                 return true;
             }
@@ -117,10 +126,12 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
         flexboxLayout = (FlexboxLayout) findViewById(R.id.flexbox_layout);
-       for(int i=0;i<10;i++){
+//        显示搜索记录
+        historyList = DataSupport.findAll(SearchHistory.class);
+        for (int i = 0; i < historyList.size(); i++) {
             TextView textView = new TextView(this);
             textView.setBackground(getResources().getDrawable(R.drawable.label_bg_shape));
-            textView.setText("Test Label");
+            textView.setText(historyList.get(i).getCode());
             textView.setGravity(Gravity.CENTER);
             textView.setPadding(16, 16, 16, 16);
             textView.setTextSize(16);
@@ -135,6 +146,7 @@ public class SearchActivity extends AppCompatActivity {
         }
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
        /* 处理返回键的点击事件*/
@@ -148,12 +160,12 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     /**
-     *请求搜索的提示字
+     * 请求搜索的提示字
      */
-    public void getHintHttp(String searchKey){
+    public void getHintHttp(String searchKey) {
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
         SearchAPI searchAPI = retrofitClient.createService(SearchAPI.class);
-        Observable<SearchHintBean> observable = searchAPI.httpsSearHintBean(Base64.mClientInto,searchKey);
+        Observable<SearchHintBean> observable = searchAPI.httpsSearHintBean(Base64.mClientInto, searchKey);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<SearchHintBean>() {
@@ -165,18 +177,7 @@ public class SearchActivity extends AppCompatActivity {
                     @Override
                     public void onNext(SearchHintBean value) {
                         hintList.clear();
-//                        int count = 8;
-//                        if(value.getResult().size()<=count){
-//                        for(int i=0;i<value.getResult().size();i++){
-//                            hintList.add(value.getResult().get(i));
-//                        }
-//                        myAdapter.notifyDataSetChanged();}
-//                        else {
-//                            for(int i=0;i<count;i++){
-//                                hintList.add(value.getResult().get(i));
-//                            }
-//                            myAdapter.notifyDataSetChanged();}
-                        for(int i=0;i<value.getResult().size();i++){
+                        for (int i = 0; i < value.getResult().size(); i++) {
                             hintList.add(value.getResult().get(i));
                         }
                         myAdapter.notifyDataSetChanged();
