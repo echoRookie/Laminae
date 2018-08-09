@@ -139,7 +139,12 @@ public class ImageDetialActivity extends AppCompatActivity {
         pinsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                if(checkLogin()){
+                    showDialog();
+                }else {
+                    Toast.makeText(getApplication(),"请登录后再操作",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 //        设置toolbar
@@ -365,8 +370,13 @@ public class ImageDetialActivity extends AppCompatActivity {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(Intent.createChooser(intent, "分享图片"));
                 break;
-
-
+            case R.id.action_gather:
+                if(checkLogin()){
+                    showDialog();
+                }else {
+                    Toast.makeText(getApplication(),"请登录后再操作",Toast.LENGTH_SHORT).show();
+                }
+                break;
 
 
 
@@ -392,42 +402,51 @@ public class ImageDetialActivity extends AppCompatActivity {
      * 用户对图片进行like操作
      */
     private void userOperateLike(){
-        Toast.makeText(this, "like", Toast.LENGTH_SHORT).show();
-        RetrofitClient retrofitClient = RetrofitClient.getInstance();
-        OperateAPI operateAPI = retrofitClient.createService(OperateAPI.class);
-        String m = (String) SPUtils.get(this, Constant.USERAUthorization, Base64.mClientInto);
-        Observable<LikePinsOperateBean> observable = operateAPI.httpsLikeOperate(m, String.valueOf(pinsId), "like");
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<LikePinsOperateBean>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        if(checkLogin()){
+            Toast.makeText(this, "已关注到列表", Toast.LENGTH_SHORT).show();
+            RetrofitClient retrofitClient = RetrofitClient.getInstance();
+            OperateAPI operateAPI = retrofitClient.createService(OperateAPI.class);
+            String m = (String) SPUtils.get(this, Constant.USERAUthorization, Base64.mClientInto);
+            Observable<LikePinsOperateBean> observable = operateAPI.httpsLikeOperate(m, String.valueOf(pinsId), "like");
+            observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<LikePinsOperateBean>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onNext(LikePinsOperateBean value) {
-                        is_like = !is_like;
-                        if (is_like)
-                            toolbar.getMenu().findItem(R.id.action_like).setTitle("已添加到喜欢");
-                        if (!is_like)
-                            toolbar.getMenu().findItem(R.id.action_like).setTitle("喜欢");
+                        @Override
+                        public void onNext(LikePinsOperateBean value) {
+                            is_like = !is_like;
+                            if (is_like)
+                                toolbar.getMenu().findItem(R.id.action_like).setTitle("已添加到喜欢");
+                            if (!is_like)
+                                toolbar.getMenu().findItem(R.id.action_like).setTitle("喜欢");
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
+                        @Override
+                        public void onError(Throwable e) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onComplete() {
+                        @Override
+                        public void onComplete() {
 
-                    }
-                });
+                        }
+                    });
+        }else {
+            Toast.makeText(getApplication(),"请登录后再操作",Toast.LENGTH_SHORT).show();
+        }
+
     }
+
+    /**
+     * 图片的下载操作
+     */
     private void userOperateDownLoad(){
-        Toast.makeText(this,"下载",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"下载完成，图片保存在"+FileUtils.getDirsFile().getAbsolutePath(),Toast.LENGTH_SHORT).show();
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
         DownUpAPI downUpAPI = retrofitClient.createService(DownUpAPI.class);
         Observable<ResponseBody> observable = downUpAPI.httpDownImage(pinsKey);
@@ -458,7 +477,7 @@ public class ImageDetialActivity extends AppCompatActivity {
                     }
                 });
     }
-
+//  判断权限是否存在
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
        switch (requestCode){
@@ -481,5 +500,18 @@ public class ImageDetialActivity extends AppCompatActivity {
     public void showDialog(){
         GatherPinsDialog gatherPinsDialog = new GatherPinsDialog();
         gatherPinsDialog.show(getSupportFragmentManager(),"gatherPinsDialog");
+    }
+
+    /**
+     * @return
+     * 检查用户是否登录
+     */
+    public boolean checkLogin(){
+        boolean isLogin = (boolean) SPUtils.get(getApplication(),Constant.ISLOGIN,false);
+        if (isLogin){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

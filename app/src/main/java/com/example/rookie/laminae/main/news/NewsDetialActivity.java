@@ -2,6 +2,8 @@ package com.example.rookie.laminae.main.news;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -11,11 +13,22 @@ import com.example.rookie.laminae.R;
 public class NewsDetialActivity extends AppCompatActivity {
     private WebView webView;
     private String newsUrl;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//
         setContentView(R.layout.activity_news_detial);
+//        初始化tool
+        toolbar = (Toolbar) findViewById(R.id.news_detial_toolbar);
+        toolbar.setTitle("新闻详情");
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         newsUrl = getIntent().getStringExtra("NEWSURL");
         webView = (WebView) findViewById(R.id.news_detial_webView);
         //声明WebSettings子类
@@ -43,5 +56,15 @@ public class NewsDetialActivity extends AppCompatActivity {
             }
         });
         webView.loadUrl(newsUrl);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 }

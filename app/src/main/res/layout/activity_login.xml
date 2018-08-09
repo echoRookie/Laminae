@@ -29,11 +29,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/login_name"
-            android:inputType="text"/>
+            android:inputType="textEmailAddress"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         app:theme="@style/Login.TextInputLayout.textColor"
+        app:passwordToggleEnabled="true"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_margin_left"
         android:layout_marginRight="@dimen/activity_margin_right"
@@ -70,6 +71,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/regist"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_margin="16dp"
+        android:background="?colorAccent"
+        />
+    <Button
+        android:textColor="@color/loginTextColor"
+        style="?attr/borderlessButtonStyle"
+        android:backgroundTint="@color/loginButtonBackground"
+        android:id="@+id/btn_tourist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tourist"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_margin="16dp"

@@ -2,25 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:icon="@drawable/startup_logo"
+            android:icon="@drawable/nav_search"
             android:id="@+id/nav_search"
             android:title="@string/navgation_search"/>
         <item
-            android:icon="@drawable/startup_logo"
+            android:icon="@drawable/nav_setting"
             android:id="@+id/nav_setting"
             android:title="@string/navigation_setting"/>
         <item
-            android:icon="@drawable/startup_logo"
+            android:icon="@drawable/nav_follow"
             android:id="@+id/nav_follow"
             android:title="@string/navgation_follow" />
     </group>
     <group android:checkableBehavior="single">
         <item
-            android:icon="@drawable/startup_logo"
+            android:icon="@drawable/nav_about"
             android:id="@+id/nav_about"
             android:title="@string/navgation_about"/>
         <item
-            android:icon="@drawable/startup_logo"
+            android:icon="@drawable/nav_exit"
             android:id="@+id/nav_logout"
             android:title="@string/navigation_logout"/>
 

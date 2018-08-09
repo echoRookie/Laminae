@@ -183,13 +183,13 @@
                         android:layout_toRightOf="@id/image_detial_board_cover_three"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="被采集到画板"/>
+                        android:text="被采集到的画板"/>
                     <TextView
                         android:padding="8dp"
                         android:textSize="16dp"
                         android:background="@drawable/text_view_background"
                         android:layout_marginTop="8dp"
-                        android:text="haha"
+                        android:textColor="@color/grey_50"
                         android:layout_below="@id/image_detial_board"
                         android:layout_toRightOf="@id/image_detial_board_cover_four"
                         android:id="@+id/image_detial_board_title"

@@ -13,9 +13,13 @@ import android.view.ViewGroup;
 
 import com.example.rookie.laminae.api.TypeAPI;
 import com.example.rookie.laminae.R;
+import com.example.rookie.laminae.db.Category;
+import com.example.rookie.laminae.db.SearchHistory;
 import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.user.UserPins.UserPinsBean;
 import com.example.rookie.laminae.util.Constant;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,7 @@ public class ClassifyFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<String> myKeys;
     private ClassifyAdapter myAdapter;
+    private List<Category> categoryList; //图片分类列表
     private int i;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -44,15 +49,14 @@ public class ClassifyFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
 
-//      初始化分类列表
-        String[] titles = getResources().getStringArray(R.array.title_array_all);
-        String[] types = getResources().getStringArray(R.array.type_array_all);
+//      初始化分类列表,从数据库中获取
+        categoryList = DataSupport.findAll(Category.class);
         myTitles = new ArrayList<>();
         myTypes = new ArrayList<>();
         myKeys = new ArrayList<>();
-        for (int i=0;i<titles.length;i++){
-            myTitles.add(titles[i]);
-            myTypes.add(types[i]);
+        for (int i=0;i<categoryList.size();i++){
+            myTitles.add(categoryList.get(i).getCategoryName());
+            myTypes.add(categoryList.get(i).getGetCategoryType());
         }
     }
 
@@ -62,11 +66,25 @@ public class ClassifyFragment extends Fragment {
         View view = inflater.inflate(R.layout.recyclerview_base,container,false);
         recyclerView = (RecyclerView) view.findViewById(R.id.base_recyclerView);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
-
+//       刷新事件
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+//              首先清空图片分类列表
+                categoryList.clear();
+                myTitles.clear();
+                myTypes.clear();
+//               重新从数据库获取数据
+                categoryList = DataSupport.findAll(Category.class);
+                for (int i=0;i<categoryList.size();i++){
+                    myTitles.add(categoryList.get(i).getCategoryName());
+                    myTypes.add(categoryList.get(i).getGetCategoryType());
+                }
                 getPinsKeys();
+//                通知适配器更新数据
+                myAdapter.notifyDataSetChanged();
+//                刷新完成
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
         getPinsKeys();

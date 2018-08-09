@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.base.BaseActivity;
 import com.example.rookie.laminae.user.UserInfoActivity;
 import com.example.rookie.laminae.util.Constant;
+import com.example.rookie.laminae.util.NetUtils;
 import com.example.rookie.laminae.util.SPUtils;
 import com.example.rookie.laminae.welcome.WelcomeActivity;
 
@@ -34,6 +36,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     private TextInputEditText passwordText;
     private Button loginButton;
     private Button registerButton;
+    private Button toursitButton;
     private String username;
     private String password;
     private UserBean userBean  ;
@@ -53,6 +56,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
         passwordText = (TextInputEditText) findViewById(R.id.loginPassword);
         loginButton = (Button) findViewById(R.id.btn_login);
         registerButton = (Button) findViewById(R.id.btn_register);
+//      游客进入系统按钮
+        toursitButton = (Button) findViewById(R.id.btn_tourist);
 
         registerButton.setText(R.string.regist);
 
@@ -67,24 +72,39 @@ public class LoginActivity extends BaseActivity implements LoginView {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//              登录检查
+//              登录检查输入是否为空
                 username = usernameText.getText().toString();
                 password = passwordText.getText().toString();
-                if(TextUtils.isEmpty(username)||TextUtils.isEmpty(password)){
-                    Snackbar.make(v, R.string.login_tips,Snackbar.LENGTH_SHORT).show();
+//              检查网络是否连接,当密码不为空且网络已连接时，跳转登录，验证输入是否正确
+                if(NetUtils.isConnected(getContext())){
+                    if(TextUtils.isEmpty(username)||TextUtils.isEmpty(password)){
+                        Snackbar.make(v, R.string.login_tips,Snackbar.LENGTH_SHORT).show();
+                    }
+                    else{
+                        loginPresenter.getLoginApiData(username,password);
+                        loginButton.setText("登陆中...");
+                    }
                 }
-                else{
-                loginPresenter.getLoginApiData(username,password);
-                loginButton.setText("登陆中...");
+//              网络连接错误时跳转到设置
+                else {
+                    NetUtils.showNetworkErrorSnackBar(getContext(),v,"网络错误，请检查网络连接","设置");
                 }
+
             }
         });
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(getString(R.string.urlRegister)));
                 startActivity(intent);
+            }
+        });
+        toursitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               startActivity(new Intent(LoginActivity.this,MainActivity.class));
+               SPUtils.putApply(getContext(),Constant.ISLOGIN,false);
             }
         });
 
@@ -180,16 +200,16 @@ public class LoginActivity extends BaseActivity implements LoginView {
     }
 
     /**
-     *设置用户关注的分类
+     *设置用户关注的分类，默认全部
      */
     public void setCategoryInfo(){
         DataSupport.deleteAll(Category.class);
         String[] categoryName = getResources().getStringArray(R.array.title_array_all);
-        String[] categorryType = getResources().getStringArray(R.array.type_array_all);
+        String[] categoryType = getResources().getStringArray(R.array.type_array_all);
         for (int i =1;i<categoryName.length;i++){
             Category category = new Category();
             category.setCategoryName(categoryName[i]);
-            category.setGetCategoryType(categorryType[i]);
+            category.setGetCategoryType(categoryType[i]);
             category.save();
         }
 

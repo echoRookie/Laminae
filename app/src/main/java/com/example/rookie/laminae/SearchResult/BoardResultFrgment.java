@@ -66,11 +66,15 @@ public class BoardResultFrgment extends Fragment {
 
                     @Override
                     public void onNext(SearchBoardListBean value) {
-                        Log.d("BoardResultFragment", "onNext: "+value.getBoards().size());
-                       myAdapter = new BoardResultAdapter(getContext(),value.getBoards());
-                        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
-                        recyclerView.setLayoutManager(gridLayoutManager);
-                        recyclerView.setAdapter(myAdapter);
+//                      判断是否此字段的搜索结果
+                        if(value!=null && value.getBoards().size()>0){
+                            Log.d("BoardResultFragment", "onNext: "+value.getBoards().size());
+                            myAdapter = new BoardResultAdapter(getContext(),value.getBoards());
+                            GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
+                            recyclerView.setLayoutManager(gridLayoutManager);
+                            recyclerView.setAdapter(myAdapter);
+                        }
+
                     }
 
                     @Override

@@ -33,10 +33,10 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
-public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
+public class UserInfoActivity extends AppCompatActivity implements UserInfoView {
     private Toolbar toolbar;
     private int userId;//用户id
-    private ImageView haederBackground;
+    private ImageView haederBackground;//背景图
     private CircleImageView userIcon;
     private TextView userFollowers;
     private TextView username;
@@ -52,21 +52,31 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
-        toolbar = (Toolbar) findViewById(R.id.user_toolbar) ;
-        addBoard = (ImageView) findViewById(R.id.user_add_board);
-        addBoard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BoardAddDialog boardAddDialog = new BoardAddDialog();
-                boardAddDialog.show(getSupportFragmentManager(),"");
-            }
-        });
+        toolbar = (Toolbar) findViewById(R.id.user_toolbar);
+        toolbar.setTitle("个人信息");
 //      得到用户Id，初始化用户信息
-        userId = getIntent().getIntExtra(Constant.USERID,0);
+        userId = getIntent().getIntExtra(Constant.USERID, 0);
+//      判断是否为当前登录用户，不是则不显示编辑按钮
+        Integer id = (Integer) SPUtils.get(getApplicationContext(), Constant.USERID,(Integer) 0);
+        Log.d("hhhhh", "onCreate: " + id+"   "+userId);
+        if (userId == id) {
+            addBoard = (ImageView) findViewById(R.id.user_add_board);
+            addBoard.setVisibility(View.VISIBLE);
+            addBoard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BoardAddDialog boardAddDialog = new BoardAddDialog();
+                    boardAddDialog.show(getSupportFragmentManager(), "");
+                }
+            });
+        } else {
+            addBoard = (ImageView) findViewById(R.id.user_add_board);
+            addBoard.setVisibility(View.INVISIBLE);
+        }
         haederBackground = (ImageView) findViewById(R.id.header_image_background);
         userIcon = (CircleImageView) findViewById(R.id.header_usericon);
         username = (TextView) findViewById(R.id.header_username);
-        userFollowers = (TextView) findViewById(R.id.user_follower) ;
+        userFollowers = (TextView) findViewById(R.id.user_follower);
 //      初始化用户关注信息
         myFragments = new ArrayList<>();
         myFragments.add(UserBoardFragment.newInstance(String.valueOf(userId)));
@@ -74,7 +84,7 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
         myFragments.add(UserLikeFragment.newINstance(String.valueOf(userId)));
         userTablayout = (TabLayout) findViewById(R.id.user_tablayout);
         userViewpager = (ViewPager) findViewById(R.id.user_viewPager);
-        myAdapter = new UserViewPagerAdapter(getSupportFragmentManager(),myFragments);
+        myAdapter = new UserViewPagerAdapter(getSupportFragmentManager(), myFragments);
         userViewpager.setAdapter(myAdapter);
         userTablayout.setupWithViewPager(userViewpager);
         userTablayout.removeAllTabs();
@@ -82,35 +92,36 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
         userInfoPresenter = new UserInfoPresenter();
         userInfoPresenter.attachView(this);
         userInfoPresenter.getUserInfoData(String.valueOf(userId));
-        String m = (String) SPUtils.get(getApplicationContext(),Constant.USERAUthorization,Base64.mClientInto);
-        Log.d("userlogin", "onCreate: "+m);
+        String m = (String) SPUtils.get(getApplicationContext(), Constant.USERAUthorization, Base64.mClientInto);
+        Log.d("userlogin", "onCreate: " + m);
 
     }
 
 
     /**
      * 设置用户信息
-     * @param  info
+     *
+     * @param info
      */
     @Override
     public void setUserInfo(UserBean info) {
         this.userBean = info;
         String url = getString(R.string.url_image);
-        ImageLoadBuider.ImageLoadFromParams(getApplication(),userIcon,userBean.getIcon_info().getKey());
+        ImageLoadBuider.ImageLoadFromParams(getApplication(), userIcon, userBean.getIcon_info().getKey());
 //        Glide.with(getApplication())
 //                .load(url+)
 //                .crossFade(1000)
 //                .into(userIcon);
 
         Glide.with(getApplication())
-                .load(url+userBean.getIcon_info().getKey())
-                .override(50,50)
-                .bitmapTransform(new BlurTransformation(this,25))
+                .load(url + userBean.getIcon_info().getKey())
+                .override(50, 50)
+                .bitmapTransform(new BlurTransformation(this, 25))
                 .crossFade(1000)
                 .into(haederBackground);
         username.setText(userBean.getUsername());
 //      设置标题栏
-        toolbar.setTitle(userBean.getUsername());
+        toolbar.setTitle("个人信息");
         setSupportActionBar(toolbar);
         /*显示toolbar自带返回键设置标题*/
         ActionBar actionBar = getSupportActionBar();
@@ -119,25 +130,25 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        userFollowers.setText("粉丝 | "+userBean.getFollower_count());
-        Log.d("userAC", "setUserInfo: "+userBean.getBoard_count());
-        for (int i=0;i<myAdapter.getCount();i++) {
+        userFollowers.setText("粉丝 | " + userBean.getFollower_count());
+        Log.d("userAC", "setUserInfo: " + userBean.getBoard_count());
+        for (int i = 0; i < myAdapter.getCount(); i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.user_tab_item, null);
             TextView userTitle = (TextView) view.findViewById(R.id.tab_item_title);
             TextView userNum = (TextView) view.findViewById(R.id.tab_item_num);
-            if(i==0){
+            if (i == 0) {
                 userTitle.setText("画板");
                 userNum.setText(String.valueOf(userBean.getBoard_count()));
-                userTablayout.addTab(userTablayout.newTab().setCustomView(view),true);
+                userTablayout.addTab(userTablayout.newTab().setCustomView(view), true);
 
             }
-            if(i==1){
+            if (i == 1) {
                 userTitle.setText("采集");
                 userNum.setText(String.valueOf(userBean.getPin_count()));
                 userTablayout.addTab(userTablayout.newTab().setCustomView(view));
 
             }
-            if(i==2){
+            if (i == 2) {
                 userTitle.setText("喜欢");
                 userNum.setText(String.valueOf(userBean.getLike_count()));
                 userTablayout.addTab(userTablayout.newTab().setCustomView(view));
@@ -157,6 +168,7 @@ public class UserInfoActivity extends AppCompatActivity implements UserInfoView{
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void showLodaing() {
 

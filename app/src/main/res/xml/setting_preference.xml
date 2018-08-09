@@ -5,10 +5,10 @@
         <SwitchPreference
             android:defaultValue="false"
             android:title="开启动态壁纸"
-            android:key="switch_notification" />
+            android:key="switch_wallpaper" />
         <SwitchPreference
         android:defaultValue="false"
         android:title="清除缓存"
-        android:key="isNight" />
+        android:key="isClear" />
     </PreferenceCategory>
 </PreferenceScreen>

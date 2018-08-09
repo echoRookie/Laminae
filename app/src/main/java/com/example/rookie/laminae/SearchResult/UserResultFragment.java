@@ -33,6 +33,7 @@ public class UserResultFragment extends Fragment {
     private static final String SEARCHKEY = Constant.SEARCHKEY;
     private UserResultAdapter userResultAdapter;
     private int index = 1;//联网起始页
+
     //    返回实例本身
     public static UserResultFragment newInstance(String searchKey) {
         UserResultFragment userResultFragment = new UserResultFragment();
@@ -45,7 +46,7 @@ public class UserResultFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recyclerview_base,container,false);
+        View view = inflater.inflate(R.layout.recyclerview_base, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.base_recyclerView);
         Bundle bundle = getArguments();
         searchKey = bundle.getString(SEARCHKEY);
@@ -56,10 +57,10 @@ public class UserResultFragment extends Fragment {
     /**
      * 联网请求搜索用户的数据
      */
-    public void getUserHttp(){
+    public void getUserHttp() {
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
         SearchAPI searchAPI = retrofitClient.createService(SearchAPI.class);
-        Observable<SearchPeopleListBean> observable = searchAPI.httpsPeopleSearchRx(Base64.mClientInto,searchKey,index,20);
+        Observable<SearchPeopleListBean> observable = searchAPI.httpsPeopleSearchRx(Base64.mClientInto, searchKey, index, 20);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<SearchPeopleListBean>() {
@@ -70,8 +71,8 @@ public class UserResultFragment extends Fragment {
 
                     @Override
                     public void onNext(SearchPeopleListBean value) {
-                        if (value!= null) {
-                            Log.d("userResult", "onNext: " + value.getUsers().size() + "neirong" + value.getUsers().get(1).getFollower_count());
+//                      判断此字段的搜索结果是否存在
+                        if (value != null && value.getUsers().size() > 0) {
                             userResultAdapter = new UserResultAdapter(value.getUsers(), getContext());
                             GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
                             recyclerView.setLayoutManager(gridLayoutManager);

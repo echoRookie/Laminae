@@ -31,10 +31,12 @@ public class UserBoardAdapter extends RecyclerView.Adapter<UserBoardAdapter.MyVi
     private String boardId;
     private String boardTitle;
     private String boardDesciption;
-    public UserBoardAdapter(List<UserBoardBean.BoardItemInfo> list,Context context,FragmentManager fragmentManager){
+    private boolean islogin;
+    public UserBoardAdapter(List<UserBoardBean.BoardItemInfo> list,Context context,FragmentManager fragmentManager,boolean islogin){
         this.myBoards = list;
         this.myContext = context;
         this.fragmentManager = fragmentManager;
+        this.islogin = islogin;
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -65,7 +67,12 @@ public class UserBoardAdapter extends RecyclerView.Adapter<UserBoardAdapter.MyVi
         boardDesciption = boardInfo.getDescription();
         holder.boardTitle.setText(boardInfo.getTitle());
         holder.boardFollow.setText("采集 "+boardInfo.getPin_count()+"关注 "+boardInfo.getFollow_count());
-        holder.boardOperate.setText("画板编辑");
+        if(islogin){
+            holder.boardOperate.setText("画板编辑");
+        }else {
+            holder.boardOperate.setVisibility(View.INVISIBLE);
+        }
+
         holder.boardOperate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

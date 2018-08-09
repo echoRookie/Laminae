@@ -22,14 +22,14 @@ public class MyPreferenceFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         //加载设置布局
         addPreferencesFromResource(R.xml.setting_preference);
-        //开启消息通知的点击事件
-        findPreference("switch_notification").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        //开启壁纸切换
+        findPreference("switch_wallpaper").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Boolean result1= (Boolean)newValue ;
-                Log.d("fffff", "onPreferenceClick: "+result1);
-                //值为true则开启消息服务
-                if (result1 == true){
+                Boolean result= (Boolean)newValue ;
+                Log.d("fffff", "onPreferenceClick: "+result);
+                //值为true则开启
+                if (result == true){
 //                    Intent intent = new Intent(getActivity(),NotificationService.class);
 //                    getActivity().startService(intent);
                 }
@@ -41,12 +41,12 @@ public class MyPreferenceFragment extends PreferenceFragment {
                 return true;
             }
         });
-        //        模式切换的点击事件
-        findPreference("isNight").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        //清除缓存
+        findPreference("isClear").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Boolean result1= (Boolean)newValue ;
-                Log.d("fffff", "onPreferenceClick: "+result1);
+                Boolean result= (Boolean)newValue ;
+                Log.d("fffff", "onPreferenceClick: "+result);
 
                 return true;
             }

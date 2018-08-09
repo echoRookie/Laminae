@@ -23,14 +23,15 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class BoardDetialActivity extends AppCompatActivity {
-    private String boardTitleText;
-    private String boardDescriptionText;
+    private String boardTitleText;//画板标题
+    private String boardDescriptionText;//画板描述
     private int boardId;
     private Toolbar toolbar;
     private BoardRecommendAdapter myAdapter;
     private RecyclerView recyclerView;
     private TextView boardTitle;
     private TextView boardDescription;
+    private int lastPinsId;//用来保存最后一张图片的id，便于后续的联网加载
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class BoardDetialActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+//    加载画板图片内容
     public  void getBoardPins(){
         final RetrofitClient retrofitClient  = RetrofitClient.getInstance();
         BoardDetailAPI boardDetailAPI = retrofitClient.createService(BoardDetailAPI.class);

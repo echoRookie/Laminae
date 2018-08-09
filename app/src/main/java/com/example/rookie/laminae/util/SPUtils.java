@@ -8,7 +8,6 @@ import java.util.Set;
 
 /**
  * Created by rookie on 2018/4/18.
- *
  */
 
 public class SPUtils {
@@ -26,6 +25,7 @@ public class SPUtils {
 
     /**
      * 异步提交方法
+     *
      * @param context
      * @param key
      * @param object
@@ -41,12 +41,13 @@ public class SPUtils {
 
     /**
      * 同步提交方法
+     *
      * @param context
      * @param key
      * @param object
      * @return
      */
-    public static boolean putCommit(Context context, String key, Object object){
+    public static boolean putCommit(Context context, String key, Object object) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME,
                 MODE);
         SharedPreferences.Editor editor = sp.edit();
@@ -56,6 +57,7 @@ public class SPUtils {
 
     /**
      * 根据不同类型 使用不同的写入方法
+     *
      * @param key
      * @param object
      * @param editor
@@ -136,56 +138,6 @@ public class SPUtils {
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();
         editor.apply();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }

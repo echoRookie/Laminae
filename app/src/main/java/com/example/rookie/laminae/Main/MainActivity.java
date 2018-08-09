@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
     private SelectAdapter selectAdapter;
     private UnselectAdapter unSelectAdapter;
     private List<String> selectListName;
-    private List<String> selectListType;
-    private List<String> unselectListName;
+    private List<String> selectListType;//已选择类型
+    private List<String> unselectListName;//未选择类型
     private List<String> unselectListType;
 
     @Override
@@ -190,19 +190,33 @@ public class MainActivity extends AppCompatActivity {
         if (SPUtils.get(getApplicationContext(), Constant.ISLOGIN, false) != null) {
             String usernameStatus = (String) SPUtils.get(getApplicationContext(), Constant.USERNAME, getString(R.string.userneme_status));
             username.setText(usernameStatus);
-            String userIconKey = (String) SPUtils.get(getApplicationContext(), Constant.USERICONKEY, "");
-            ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(), userIcon, userIconKey);
+            String userIconKey = (String) SPUtils.get(getApplicationContext(), Constant.USERICONKEY, null);
+            if(userIconKey != null){
+                ImageLoadBuider.ImageLoadCenterCrop(getApplicationContext(), userIcon, userIconKey);
+            }
+
             userIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, UserInfoActivity.class);
-                    int userId = (int) SPUtils.get(getApplicationContext(), Constant.USERID, 0);
-                    intent.putExtra(Constant.USERID, userId);
-                    startActivity(intent);
+//                  检查用户登录状态
+                    boolean isLogin = (boolean) SPUtils.get(getApplication(),Constant.ISLOGIN,false);
+                    if (isLogin){
+                        Intent intent = new Intent(MainActivity.this, UserInfoActivity.class);
+                        int userId = (int) SPUtils.get(getApplicationContext(), Constant.USERID, 0);
+                        intent.putExtra(Constant.USERID, userId);
+                        startActivity(intent);
+                    }else{
+                        startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                        Toast.makeText(getApplication(),"先登录才能查看个人信息",Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             });
-            String userIconUrl = (String) SPUtils.get(getApplicationContext(), Constant.USERICONKEY, "");
-            ImageLoadBuider.ImageLoadfitCenter(this, userIcon, userIconUrl);
+            String userIconUrl = (String) SPUtils.get(getApplicationContext(), Constant.USERICONKEY, null);
+            if(userIconUrl != null){
+                ImageLoadBuider.ImageLoadfitCenter(this, userIcon, userIconUrl);
+            }
+
 //       底部导航栏的实现
             bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
             bottomNavigationBar.setBarBackgroundColor(R.color.colorPrimary);
@@ -211,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.main_home, "Home").setActiveColorResource(R.color.bottomBarHome))
                     .addItem(new BottomNavigationItem(R.drawable.main_classify, "Classify").setActiveColorResource(R.color.bottomBarClassify))
                     .addItem(new BottomNavigationItem(R.drawable.main_more, "More").setActiveColorResource(R.color.bottomBarMore))
-                    .addItem(new BottomNavigationItem(R.drawable.main_video,"Video"))
+                    .addItem(new BottomNavigationItem(R.drawable.main_video,"Video").setActiveColorResource(R.color.bottomBarMore))
                     .setFirstSelectedPosition(0)
                     .initialise();
             bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {

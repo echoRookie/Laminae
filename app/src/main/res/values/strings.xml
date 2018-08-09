@@ -4,6 +4,7 @@
     <string name="login_password">密码</string>
     <string name="regist">注册</string>
     <string name="login">登录</string>
+    <string name="tourist">随便看看</string>
     <string name="login_tips">用户名或密码不能为空</string>
     <string name="url_register">http://huaban.com/</string>
     <string name="navigation_setting">设置</string>

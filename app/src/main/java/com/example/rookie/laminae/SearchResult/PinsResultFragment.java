@@ -69,11 +69,15 @@ public class PinsResultFragment extends Fragment {
 
                     @Override
                     public void onNext(SearchImageBean value) {
-                        Log.d("pinss", "onNext: "+value.getPins().size());
-                        myAdapter = new UserLikeAdapter(value.getPins(),getContext());
-                        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
-                        recyclerView.setLayoutManager(gridLayoutManager);
-                        recyclerView.setAdapter(myAdapter);
+//                      判断此字段的搜索结果是否存在
+                        if(value!=null && value.getPins().size()>0){
+                            Log.d("pinss", "onNext: "+value.getPins().size());
+                            myAdapter = new UserLikeAdapter(value.getPins(),getContext());
+                            GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
+                            recyclerView.setLayoutManager(gridLayoutManager);
+                            recyclerView.setAdapter(myAdapter);
+                        }
+
 
                     }
 

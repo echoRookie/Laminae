@@ -43,7 +43,7 @@ public class FollowBoardFragment extends Fragment {
     private void getBoardHttp() {
         RetrofitClient re = RetrofitClient.getInstance();
         FollowingAPI followAPI = re.createService(FollowingAPI.class);
-        Observable<FollowBoardListBean> observable= followAPI.httpsMyFollowingBoardRx((String) SPUtils.get(getContext(), Constant.USERAUthorization, Base64.mClientInto),1,20);
+        Observable<FollowBoardListBean> observable= followAPI.httpsMyFollowingBoardRx((String) SPUtils.get(getContext(), Constant.USERAUthorization, Base64.mClientInto),1,40);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<FollowBoardListBean>() {

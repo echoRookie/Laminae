@@ -111,7 +111,12 @@ public class NewsListFragment extends Fragment {
                     public void onNext(NewsList value) {
                         for (int i=0;i<value.data.size();i++){
                             NewsDataDetial newsDataDetail = new Gson().fromJson(value.data.get(i).content,NewsDataDetial.class);
-                            list.add(newsDataDetail);
+                            Log.d("aaaaa", "onNext: "+value.data.get(i).content);
+//                           如果新闻没有标题，则跳过，添加下一个
+                            if(newsDataDetail.title !=null){
+                                list.add(newsDataDetail);
+                            }
+
 
                         }
                         myAdapter = new NewsListAdapter(list,getContext());

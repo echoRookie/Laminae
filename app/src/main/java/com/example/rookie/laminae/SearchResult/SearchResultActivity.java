@@ -21,7 +21,7 @@ public class SearchResultActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private String searchKey;
+    private String searchKey;//搜索字段
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -16,6 +16,7 @@ import com.example.rookie.laminae.R;
 import com.example.rookie.laminae.httputils.RetrofitClient;
 import com.example.rookie.laminae.util.Base64;
 import com.example.rookie.laminae.util.Constant;
+import com.example.rookie.laminae.util.SPUtils;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -28,6 +29,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class UserBoardFragment extends Fragment {
+    private int id;//登录者的id，判断是否是登录的人
     private String userId;
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView recyclerView;
@@ -38,6 +40,7 @@ public class UserBoardFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString(Constant.USERID, userId);
         userBoardFragment.setArguments(bundle);
+
         return userBoardFragment;
     }
 
@@ -56,6 +59,7 @@ public class UserBoardFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         getBoardInfoFirst();
+        id = (int) SPUtils.get(getContext(), Constant.USERID,(Integer) 0);
         return view;
     }
 
@@ -77,10 +81,19 @@ public class UserBoardFragment extends Fragment {
                     @Override
                     public void onNext(UserBoardBean value) {
 //                        Log.d("UserBoardFragment", "onNext: " + value.getBoards().size());
-                        UserBoardAdapter myAdapter = new UserBoardAdapter(value.getBoards(), getContext(),getFragmentManager());
-                        GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
-                        recyclerView.setLayoutManager(manager);
-                        recyclerView.setAdapter(myAdapter);
+//                        判断是否是登录用户的个人界面
+                        if(id == Integer.valueOf(userId)){
+                            UserBoardAdapter myAdapter = new UserBoardAdapter(value.getBoards(), getContext(),getFragmentManager(),true);
+                            GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
+                            recyclerView.setLayoutManager(manager);
+                            recyclerView.setAdapter(myAdapter);
+                        }else {
+                            UserBoardAdapter myAdapter = new UserBoardAdapter(value.getBoards(), getContext(),getFragmentManager(),false);
+                            GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
+                            recyclerView.setLayoutManager(manager);
+                            recyclerView.setAdapter(myAdapter);
+                        }
+
                     }
 
                     @Override
